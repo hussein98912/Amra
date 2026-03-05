@@ -4,6 +4,10 @@ from rest_framework import status
 from .serializers import RegisterSerializer,PilgrimRegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
+
+def health_check(request):
+    return JsonResponse({"status": "ok"}, status=200)
 
 class RegisterView(APIView):
     permission_classes = []
