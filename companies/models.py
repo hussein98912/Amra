@@ -10,7 +10,11 @@ class Company(models.Model):
         ("REJECTED", "Rejected"),
     )
 
-    owner = models.CharField(max_length=255)
+    owner = models.ForeignKey(
+                    "users.User",
+                    on_delete=models.CASCADE,
+                    related_name="companies"
+                    )
 
     name = models.CharField(max_length=255)
     license_number = models.CharField(max_length=100,blank=True,null=True)
@@ -28,3 +32,37 @@ class Company(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class TouristGuideProfile(models.Model):
+
+    user = models.OneToOneField(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="tourist_profile"
+    )
+
+    license_image = models.ImageField(upload_to="guide/license/")
+
+
+
+class FinancialProfile(models.Model):
+
+    user = models.OneToOneField(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="financial_profile"
+    )
+
+    financial_license_image = models.ImageField(upload_to="finance/license/")
+
+
+class SupportProfile(models.Model):
+
+    user = models.OneToOneField(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="support_profile"
+    )
+
+    notes = models.TextField(blank=True)

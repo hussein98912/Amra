@@ -26,14 +26,31 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
 
     ROLE_CHOICES = (
-        ("PILGRIM", "Pilgrim"),
-        ("COMPANY", "Company"),
+        ("COMPANY", "Company Owner"),
         ("GUIDE", "Guide"),
-        ("ADMIN", "Admin"),
+        ("FINANCE", "Finance"),
+        ("SUPPORT", "Support"),
+        ("PILGRIM", "Pilgrim"),
+    )
+
+    STATUS_CHOICES = (
+        ("PENDING", "Pending"),
+        ("ACTIVE", "Active"),
+        ("REJECTED", "Rejected"),
     )
 
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="PILGRIM")
+
+    role = models.CharField(max_length=30, choices=ROLE_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
+
+    company = models.ForeignKey(
+        "companies.Company",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users"
+    )
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -43,7 +60,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email

@@ -45,5 +45,6 @@ class CompanyRegisterSerializer(serializers.Serializer):
             id_card_image=id_image,
             status="PENDING"
         )
-
+        user.company = company
+        user.save()
         return company
