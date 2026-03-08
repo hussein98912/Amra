@@ -2,6 +2,8 @@ from django.db import models
 from companies.models import Company
 
 
+from django.db.models import Sum
+
 class Package(models.Model):
 
     STATUS_CHOICES = (
@@ -19,9 +21,7 @@ class Package(models.Model):
     company = models.ForeignKey(
         Company,
         on_delete=models.CASCADE,
-        related_name="packages",
-        null=False,
-        blank=False
+        related_name="packages"
     )
 
     guide = models.ForeignKey(
@@ -47,7 +47,6 @@ class Package(models.Model):
     duration_days = models.PositiveIntegerField()
 
     capacity = models.PositiveIntegerField()
-    available_seats = models.PositiveIntegerField()
 
     # الخدمات
     includes_flight = models.BooleanField(default=False)
@@ -69,10 +68,13 @@ class Package(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        if not self.available_seats:
-            self.available_seats = self.capacity
-        super().save(*args, **kwargs)
+    @property
+    def available_seats(self):
+        booked = self.bookings.filter(
+            status="confirmed"
+        ).aggregate(total=Sum("seats"))["total"] or 0
+
+        return self.capacity - booked
 
     def __str__(self):
-        return f"{self.title} - {self.company.name}"    
+        return f"{self.title} - {self.company.name}"
