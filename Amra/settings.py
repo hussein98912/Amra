@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "companies",
     "packages",
     "bookings",
+    "notifications",
 ]
 
 AUTH_USER_MODEL = "users.User"

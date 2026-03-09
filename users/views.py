@@ -6,46 +6,86 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .models import User
+from django.contrib.auth import authenticate
+from .serializers import UserSerializer
+
 
 def health_check(request):
     return JsonResponse({"status": "ok"}, status=200)
+
+
 
 class RegisterView(APIView):
     permission_classes = []
 
     def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({"message": "User created"}, status=201)
+        role = request.data.get("role", "PILGRIM").upper()
+
+        if role == "PILGRIM":
+            serializer = PilgrimRegisterSerializer(data=request.data)
+        else:
+            serializer = RegisterSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+
+            # Create JWT tokens
+            refresh = RefreshToken.for_user(user)
+            user_data = UserSerializer(user).data
+
+            return Response({
+                "message": f"{role} account created successfully",
+                "user": user_data,
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):
     permission_classes = []
 
     def post(self, request):
-        from django.contrib.auth import authenticate
-        user = authenticate(
-            email=request.data.get("email"),
-            password=request.data.get("password"),
-        )
-        if not user:
-            return Response({"error": "Invalid credentials"}, status=400)
+        email = request.data.get("email")
+        password = request.data.get("password")
 
+        user = authenticate(email=email, password=password)
+        if not user:
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
+
+        # Serialize user info
+        user_data = UserSerializer(user).data
+
+        # Return tokens + full user info + message
         return Response({
+            "message": "Login successful",
+            "user": user_data,
             "access": str(refresh.access_token),
-            "refresh": str(refresh),
-        })
+            "refresh": str(refresh)
+        }, status=status.HTTP_200_OK)
     
+
 class PilgrimRegisterView(APIView):
     permission_classes = []
 
     def post(self, request):
         serializer = PilgrimRegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"message": "Pilgrim account created"}, status=201)
+        
+        # Save user + pilgrim profile
+        user = serializer.save()
+
+        # Serialize full user data
+        user_data = UserSerializer(user).data
+
+        return Response({
+            "message": "Pilgrim account created successfully",
+            "user": user_data
+        }, status=status.HTTP_201_CREATED)
     
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]

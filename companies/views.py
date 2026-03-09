@@ -6,21 +6,28 @@ from .serializers import CompanyRegisterSerializer
 from .models import *
 from rest_framework.parsers import MultiPartParser, FormParser
 from users.models import User
+from users.serializers import UserSerializer
 
 
 class CompanyRegisterView(APIView):
-
     permission_classes = []
     parser_classes = [MultiPartParser, FormParser]
-    def post(self, request):
 
+    def post(self, request):
         serializer = CompanyRegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        
+        # Save the company and user
+        company = serializer.save()
+        user = company.owner
+
+        # Serialize full user data (with company info)
+        user_data = UserSerializer(user).data
 
         return Response({
-            "message": "Company registered successfully. Waiting for approval."
-        })
+            "message": "Company registered successfully. Waiting for approval.",
+            "user": user_data
+        }, status=status.HTTP_201_CREATED)
 
 class CompanyStatusUpdateView(APIView):
 

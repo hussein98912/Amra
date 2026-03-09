@@ -3,6 +3,8 @@ from django.conf import settings
 from packages.models import Package
 
 
+# booking/models.py
+
 class Booking(models.Model):
 
     STATUS_CHOICES = (
@@ -13,9 +15,8 @@ class Booking(models.Model):
 
     PAYMENT_STATUS_CHOICES = (
         ("UNPAID", "Unpaid"),
-        ("PARTIAL", "Partial Paid"),
+        ("PARTIAL", "Partial"),
         ("PAID", "Paid"),
-        ("VERIFIED", "Verified"),
     )
 
     pilgrim = models.ForeignKey(
@@ -31,10 +32,7 @@ class Booking(models.Model):
 
     seats = models.PositiveIntegerField(default=1)
 
-    total_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2
-    )
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     paid_amount = models.DecimalField(
         max_digits=10,
@@ -62,8 +60,13 @@ class Booking(models.Model):
 
     transaction_number = models.CharField(
         max_length=100,
-        blank=True,
-        null=True
+        null=True,
+        blank=True
+    )
+
+    rejection_reason = models.TextField(
+        null=True,
+        blank=True
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

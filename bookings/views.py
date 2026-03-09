@@ -7,6 +7,8 @@ from rest_framework.exceptions import PermissionDenied
 
 from .models import Booking
 from .serializers import BookingSerializer
+from notifications.models import Notification
+
 
 
 class BookingViewSet(viewsets.ModelViewSet):
@@ -27,6 +29,10 @@ class BookingViewSet(viewsets.ModelViewSet):
             )
 
         return Booking.objects.filter(pilgrim=user)
+
+    # -------------------------
+    # إنشاء حجز
+    # -------------------------
 
     def perform_create(self, serializer):
 
@@ -52,7 +58,10 @@ class BookingViewSet(viewsets.ModelViewSet):
             status="PENDING"
         )
 
-    # ✅ الدفع الجزئي
+    # -------------------------
+    # الدفع (جزئي أو كامل)
+    # -------------------------
+
     @action(detail=True, methods=["POST"])
     def pay(self, request, pk=None):
 
@@ -86,3 +95,88 @@ class BookingViewSet(viewsets.ModelViewSet):
             "paid_amount": booking.paid_amount,
             "remaining_amount": booking.remaining_amount
         })
+
+    # -------------------------
+    # قبول الحجز من الشركة
+    # -------------------------
+
+    @action(detail=True, methods=["POST"])
+    def approve(self, request, pk=None):
+
+        booking = self.get_object()
+        user = request.user
+
+        if user.role != "COMPANY":
+            return Response(
+                {"error": "Only company can approve bookings"},
+                status=403
+            )
+
+        if booking.package.company != user.company:
+            return Response(
+                {"error": "This booking does not belong to your company"},
+                status=403
+            )
+
+        if booking.payment_status != "PAID":
+            return Response(
+                {"error": "Payment must be completed before approval"},
+                status=400
+            )
+
+        booking.status = "CONFIRMED"
+        booking.save()
+
+        Notification.objects.create(
+            user=booking.pilgrim,
+            message=f"Your booking for {booking.package.title} has been approved"
+        )
+
+        return Response({
+            "message": "Booking approved successfully"
+        })
+
+    # -------------------------
+    # رفض الحجز
+    # -------------------------
+
+    @action(detail=True, methods=["POST"])
+    def reject(self, request, pk=None):
+
+        booking = self.get_object()
+        user = request.user
+
+        if user.role != "COMPANY":
+            return Response(
+                {"error": "Only company can reject bookings"},
+                status=403
+            )
+
+        if booking.package.company != user.company:
+            return Response(
+                {"error": "This booking does not belong to your company"},
+                status=403
+            )
+
+        reason = request.data.get("reason")
+
+        if not reason:
+            return Response(
+                {"error": "Rejection reason is required"},
+                status=400
+            )
+
+        booking.status = "CANCELLED"
+        booking.rejection_reason = reason
+        booking.save()
+
+        Notification.objects.create(
+            user=booking.pilgrim,
+            message=f"Booking rejected. Reason: {reason}"
+        )
+
+        return Response({
+            "message": "Booking rejected successfully"
+        })
+    
+    

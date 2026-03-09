@@ -16,7 +16,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
     def validate(self, data):
         user = authenticate(email=data["email"], password=data["password"])
@@ -24,6 +24,17 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid credentials")
         data["user"] = user
         return data
+
+    def to_representation(self, instance):
+        """
+        Customize the response after validation.
+        Returns a message and the full serialized user info.
+        """
+        user = instance.get("user")
+        return {
+            "message": "Login successful",
+            "user": UserSerializer(user).data
+        }
     
 
 from rest_framework import serializers
@@ -82,3 +93,47 @@ class PilgrimRegisterSerializer(serializers.Serializer):
             )
 
         return user
+    
+
+class PilgrimProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PilgrimProfile
+        fields = [
+            "first_name",
+            "last_name",
+            "full_name",
+            "phone",
+            "passport_number",
+            "nationality",
+            "date_of_birth",
+            "emergency_contact",
+            "profile_image",
+            "passport_image",
+            "created_at"
+        ]
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    pilgrim_profile = PilgrimProfileSerializer(read_only=True)
+
+    company_name = serializers.CharField(
+        source="company.name",
+        read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "role",
+            "status",
+            "company",
+            "company_name",
+            "is_active",
+            "is_staff",
+            "created_at",
+            "pilgrim_profile"
+        ]
