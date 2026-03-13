@@ -137,3 +137,50 @@ class UserSerializer(serializers.ModelSerializer):
             "created_at",
             "pilgrim_profile"
         ]
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+
+    # حقول PilgrimProfile
+    first_name = serializers.CharField(source="pilgrim_profile.first_name", required=False)
+    last_name = serializers.CharField(source="pilgrim_profile.last_name", required=False)
+    full_name = serializers.CharField(source="pilgrim_profile.full_name", required=False)
+    phone = serializers.CharField(source="pilgrim_profile.phone", required=False)
+    passport_number = serializers.CharField(source="pilgrim_profile.passport_number", required=False)
+    emergency_contact = serializers.CharField(source="pilgrim_profile.emergency_contact", required=False)
+
+    # الصور
+    profile_image = serializers.ImageField(source="pilgrim_profile.profile_image", required=False)
+    passport_image = serializers.ImageField(source="pilgrim_profile.passport_image", required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "full_name",
+            "phone",
+            "passport_number",
+            "emergency_contact",
+            "profile_image",
+            "passport_image",
+        ]
+
+    def update(self, instance, validated_data):
+
+        profile_data = validated_data.pop("pilgrim_profile", {})
+
+        # تحديث معلومات المستخدم
+        instance.email = validated_data.get("email", instance.email)
+        instance.save()
+
+        # تحديث معلومات البروفايل
+        profile = getattr(instance, "pilgrim_profile", None)
+
+        if profile:
+            for attr, value in profile_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+
+        return instance

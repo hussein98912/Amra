@@ -7,7 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .models import User
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer
+from .serializers import UserSerializer,UserUpdateSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 def health_check(request):
@@ -144,3 +145,38 @@ class ApproveUserView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
+class UpdateUserView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request):
+
+        user = request.user
+
+        serializer = UserUpdateSerializer(
+            user,
+            data=request.data,
+            partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({
+            "message": "User updated successfully",
+            "user": UserSerializer(user).data
+        })
+    
+
+class MeView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        user = request.user
+
+        return Response({
+            "user": UserSerializer(user).data
+        })

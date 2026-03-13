@@ -48,3 +48,195 @@ class CompanyRegisterSerializer(serializers.Serializer):
         user.company = company
         user.save()
         return company
+    
+
+class CompanyUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Company
+        fields = [
+            "name",
+            "license_number",
+            "phone",
+            "address",
+            "qr_code_image",
+            "id_card_image",
+        ]
+
+
+class SupportUpdateSerializer(serializers.ModelSerializer):
+
+    notes = serializers.CharField(
+        source="support_profile.notes",
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "notes"
+        ]
+
+    def update(self, instance, validated_data):
+
+        profile_data = validated_data.pop("support_profile", {})
+
+        instance.email = validated_data.get("email", instance.email)
+        instance.save()
+
+        profile = instance.support_profile
+
+        for attr, value in profile_data.items():
+            setattr(profile, attr, value)
+
+        profile.save()
+
+        return instance
+    
+class FinancialUpdateSerializer(serializers.ModelSerializer):
+
+    financial_license_image = serializers.ImageField(
+        source="financial_profile.financial_license_image",
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "financial_license_image"
+        ]
+
+    def update(self, instance, validated_data):
+
+        profile_data = validated_data.pop("financial_profile", {})
+
+        instance.email = validated_data.get("email", instance.email)
+        instance.save()
+
+        profile = instance.financial_profile
+
+        for attr, value in profile_data.items():
+            setattr(profile, attr, value)
+
+        profile.save()
+
+        return instance
+    
+
+
+class GuideUpdateSerializer(serializers.ModelSerializer):
+
+    license_image = serializers.ImageField(
+        source="tourist_profile.license_image",
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "license_image"
+        ]
+
+    def update(self, instance, validated_data):
+
+        profile_data = validated_data.pop("tourist_profile", {})
+
+        instance.email = validated_data.get("email", instance.email)
+        instance.save()
+
+        profile = instance.tourist_profile
+
+        for attr, value in profile_data.items():
+            setattr(profile, attr, value)
+
+        profile.save()
+
+        return instance
+    
+
+class CompanySerializer(serializers.ModelSerializer):
+
+    owner_email = serializers.CharField(source="owner.email", read_only=True)
+
+    class Meta:
+        model = Company
+        fields = [
+            "id",
+            "owner",
+            "owner_email",
+            "name",
+            "license_number",
+            "phone",
+            "address",
+            "qr_code_image",
+            "id_card_image",
+            "status",
+            "created_at"
+        ]
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    company_name = serializers.CharField(source="company.name", read_only=True)
+    
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "role",
+            "status",
+            "company",
+            "company_name",
+            "is_active",
+            "is_staff",
+            "created_at"
+        ]
+
+class EmployeeDetailSerializer(serializers.ModelSerializer):
+    company_name = serializers.CharField(source="company.name", read_only=True)
+    
+    # Include profiles if exist
+    tourist_profile = serializers.SerializerMethodField()
+    financial_profile = serializers.SerializerMethodField()
+    support_profile = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "role",
+            "status",
+            "company",
+            "company_name",
+            "is_active",
+            "is_staff",
+            "created_at",
+            "tourist_profile",
+            "financial_profile",
+            "support_profile",
+        ]
+
+    def get_tourist_profile(self, obj):
+        if hasattr(obj, "tourist_profile"):
+            return {
+                "license_image": obj.tourist_profile.license_image.url if obj.tourist_profile.license_image else None
+            }
+        return None
+
+    def get_financial_profile(self, obj):
+        if hasattr(obj, "financial_profile"):
+            return {
+                "financial_license_image": obj.financial_profile.financial_license_image.url if obj.financial_profile.financial_license_image else None
+            }
+        return None
+
+    def get_support_profile(self, obj):
+        if hasattr(obj, "support_profile"):
+            return {
+                "notes": obj.support_profile.notes
+            }
+        return None

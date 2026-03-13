@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated,AllowAny
-from .serializers import CompanyRegisterSerializer
+from .serializers import *
 from .models import *
 from rest_framework.parsers import MultiPartParser, FormParser
 from users.models import User
@@ -48,30 +48,7 @@ class CompanyStatusUpdateView(APIView):
         company.status = status_value
         company.save()
 
-        return Response({"message": "Status updated"})
-    
-class CompanyMeView(APIView):
-
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-
-        company = Company.objects.filter(
-            owner=request.user
-        ).first()
-
-        if not company:
-            return Response({"error": "Company not found"}, status=404)
-
-        return Response({
-            "name": company.name,
-            "status": company.status,
-            "phone": company.phone,
-            "address": company.address,
-            "qr_image": request.build_absolute_uri(
-                company.qr_code_image.url
-            ) if company.qr_code_image else None
-        })
+        return Response({"message": "Status updated"})   
 
 
 class CompanyUpdateMeView(APIView):
@@ -405,3 +382,114 @@ class EmployeeDetailView(APIView):
                 {"error": str(e)},
                 status=500
             )
+        
+
+
+class UpdateMyProfile(APIView):
+
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request):
+
+        user = request.user
+
+        if user.role == "GUIDE":
+            serializer = GuideUpdateSerializer(user, data=request.data, partial=True)
+
+        elif user.role == "FINANCE":
+            serializer = FinancialUpdateSerializer(user, data=request.data, partial=True)
+
+        elif user.role == "SUPPORT":
+            serializer = SupportUpdateSerializer(user, data=request.data, partial=True)
+
+        else:
+            return Response(
+                {"error": "This role cannot update profile here"},
+                status=400
+            )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({
+            "message": "Profile updated successfully",
+            "user": UserSerializer(user).data
+        })
+    
+
+
+class UpdateCompanyView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request):
+
+        user = request.user
+
+        if user.role != "COMPANY":
+            return Response(
+                {"error": "Only company owner can update company"},
+                status=403
+            )
+
+        company = user.company
+
+        serializer = CompanyUpdateSerializer(
+            company,
+            data=request.data,
+            partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({
+            "message": "Company updated successfully",
+            "company": serializer.data
+        })
+    
+
+
+class MyCompanyView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        user = request.user
+
+        if user.role != "COMPANY":
+            return Response(
+                {"error": "Only company owner can access company data"},
+                status=403
+            )
+
+        company = Company.objects.filter(owner=user).first()
+
+        if not company:
+            return Response({"error": "Company not found"}, status=404)
+
+        serializer = CompanySerializer(company)
+
+        return Response({
+            "message": "Company retrieved successfully",
+            "company": serializer.data
+        })
+    
+class MyCompanyEmployeesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        if user.role != "COMPANY":
+            return Response({"error": "Only company owners can view their employees"}, status=403)
+
+        employees = User.objects.filter(company=user.company).exclude(id=user.id)
+        serializer = EmployeeSerializer(employees, many=True)
+        return Response({
+            "message": "Company employees retrieved successfully",
+            "employees": serializer.data
+        })

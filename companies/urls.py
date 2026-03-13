@@ -5,7 +5,6 @@ from .views import *
 urlpatterns = [
     path("register/", CompanyRegisterView.as_view()),
     path("<int:id>/status/", CompanyStatusUpdateView.as_view()),
-    path("me/", CompanyMeView.as_view()),
     path("me/update/", CompanyUpdateMeView.as_view()),
     path("create/users/", CompanyUserCreateView.as_view()),
     path("employees/", CompanyEmployeeListView.as_view()),
@@ -13,4 +12,9 @@ urlpatterns = [
     path("employees/<int:employee_id>/", EmployeeDetailView.as_view()),
     path("employees/<int:user_id>/update/", CompanyEmployeeUpdateView.as_view()),
     path("employees/<int:user_id>/delete/", CompanyEmployeeDeleteView.as_view()),
+    path("update/", UpdateCompanyView.as_view()),
+    path("employees/update/", UpdateMyProfile.as_view()),
+    path("me/", MyCompanyView.as_view()),
+    path("get/employees/", MyCompanyEmployeesView.as_view(), name="my-company-employees"),
+
 ]
