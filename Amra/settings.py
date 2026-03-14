@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "packages",
     "bookings",
     "notifications",
+    "channels",
+    "chat",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -110,7 +112,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Amra.wsgi.application'
+ASGI_APPLICATION = "Amra.asgi.application"
 
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                os.environ.get("REDIS_URL", "redis://localhost:6379/0")
+            ],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
