@@ -119,9 +119,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [
-                os.environ.get("REDIS_URL", "redis://localhost:6379/0")
-            ],
+            # Render يعطي REDIS_URL تلقائيًا عند إضافة Redis Internal
+            "hosts": [os.environ.get("REDIS_URL")],
         },
     },
 }
