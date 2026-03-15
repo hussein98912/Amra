@@ -174,7 +174,7 @@ class CompanySerializer(serializers.ModelSerializer):
             "qr_code_image",
             "id_card_image",
             "status",
-            "created_at"
+            "created_at",
         ]
 
 

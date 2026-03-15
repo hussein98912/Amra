@@ -9,4 +9,5 @@ urlpatterns = [
     path("update-profile/", UpdateUserView.as_view()),
     path("me/", MeView.as_view()),
     path("<int:user_id>/approve/", ApproveUserView.as_view()),
+    path("dashboard/",PilgrimDashboard.as_view(),name="pilgrim-dashboard"),
 ]

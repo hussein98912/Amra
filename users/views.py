@@ -7,8 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .models import User
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer,UserUpdateSerializer
+from .serializers import UserSerializer,UserUpdateSerializer,UpcomingTripSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
+from bookings.models import Booking
+from notifications.models import Notification
 
 
 def health_check(request):
@@ -179,4 +181,60 @@ class MeView(APIView):
 
         return Response({
             "user": UserSerializer(user).data
+        })
+    
+
+
+class PilgrimDashboard(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        user = request.user
+
+        # إجمالي الحجوزات
+        total_bookings = Booking.objects.filter(
+            pilgrim=user
+        ).count()
+
+        # الحجوزات المؤكدة
+        confirmed_bookings = Booking.objects.filter(
+            pilgrim=user,
+            status="CONFIRMED"
+        ).count()
+
+        # قيد المعالجة
+        pending_bookings = Booking.objects.filter(
+            pilgrim=user,
+            status="PENDING"
+        ).count()
+
+        # الإشعارات غير المقروءة
+        new_notifications = Notification.objects.filter(
+            user=user,
+            is_read=False
+        ).count()
+
+        # الرحلة القادمة
+        upcoming_booking = Booking.objects.filter(
+            pilgrim=user,
+            status="CONFIRMED"
+        ).order_by("package__start_date").first()
+
+        upcoming_trip = None
+
+        if upcoming_booking:
+            upcoming_trip = UpcomingTripSerializer(
+                upcoming_booking
+            ).data
+
+        return Response({
+
+            "notifications": new_notifications,
+            "pending_bookings": pending_bookings,
+            "confirmed_bookings": confirmed_bookings,
+            "total_bookings": total_bookings,
+            "upcoming_trip": upcoming_trip
+
         })

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
 from django.db import transaction
+from bookings.models import Booking
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -184,3 +185,19 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             profile.save()
 
         return instance
+    
+
+class UpcomingTripSerializer(serializers.ModelSerializer):
+
+    package_name = serializers.CharField(source="package.title")
+    hotel_name = serializers.CharField(source="package.hotel_name")
+    start_date= serializers.DateField(source="package.start_date")
+
+    class Meta:
+        model = Booking
+        fields = [
+            "id",
+            "package_name",
+            "hotel_name",
+            "start_date"
+        ]
