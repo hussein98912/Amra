@@ -70,3 +70,13 @@ class PilgrimDetailSerializer(serializers.ModelSerializer):
                 "created_at": profile.created_at,
             }
         return None
+    
+
+class CompanyApprovalSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(choices=[("ACTIVE", "Active"), ("REJECTED", "Rejected")])
+    rejection_reason = serializers.CharField(required=False, allow_blank=True)
+
+    def validate(self, data):
+        if data["status"] == "REJECTED" and not data.get("rejection_reason"):
+            raise serializers.ValidationError("Rejection reason is required when rejecting a company.")
+        return data

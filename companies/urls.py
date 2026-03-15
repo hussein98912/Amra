@@ -14,7 +14,7 @@ urlpatterns = [
     path("employees/<int:user_id>/delete/", CompanyEmployeeDeleteView.as_view()),
     path("update/", UpdateCompanyView.as_view()),
     path("employees/update/", UpdateMyProfile.as_view()),
-    path("me/", MyCompanyView.as_view()),
+    path("me/", MeView.as_view()),
     path("get/employees/", MyCompanyEmployeesView.as_view(), name="my-company-employees"),
 
 ]

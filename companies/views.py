@@ -452,7 +452,7 @@ class UpdateCompanyView(APIView):
     
 
 
-class MyCompanyView(APIView):
+class MeView(APIView):
 
     permission_classes = [IsAuthenticated]
 
@@ -460,22 +460,19 @@ class MyCompanyView(APIView):
 
         user = request.user
 
-        if user.role != "COMPANY":
-            return Response(
-                {"error": "Only company owner can access company data"},
-                status=403
-            )
+        user_data = UserSerializer(user).data
 
-        company = Company.objects.filter(owner=user).first()
+        company_data = None
 
-        if not company:
-            return Response({"error": "Company not found"}, status=404)
+        if user.role == "COMPANY":
+            company = Company.objects.filter(owner=user).first()
 
-        serializer = CompanySerializer(company)
+            if company:
+                company_data = CompanySerializer(company).data
 
         return Response({
-            "message": "Company retrieved successfully",
-            "company": serializer.data
+            "user": user_data,
+            "company": company_data
         })
     
 class MyCompanyEmployeesView(APIView):

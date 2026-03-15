@@ -14,4 +14,5 @@ urlpatterns = router.urls + [
     path("admin/employee/<int:id>/", AdminEmployeeDetailView.as_view(), name="admin-employee-detail"),
     path("admin/company/<int:id>/", AdminCompanyDetailView.as_view(), name="admin-company-detail"),
     path("admin/pilgrim/<int:id>/", AdminPilgrimDetailView.as_view(), name="admin-pilgrim-detail"),
+    path("companies/<int:company_id>/approve-reject/", CompanyApproveRejectView.as_view()),
 ]
