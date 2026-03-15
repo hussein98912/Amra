@@ -67,6 +67,7 @@ class Package(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    reject_reason = models.TextField(blank=True, null=True)
 
     @property
     def available_seats(self):

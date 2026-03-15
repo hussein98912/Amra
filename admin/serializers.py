@@ -80,3 +80,21 @@ class CompanyApprovalSerializer(serializers.Serializer):
         if data["status"] == "REJECTED" and not data.get("rejection_reason"):
             raise serializers.ValidationError("Rejection reason is required when rejecting a company.")
         return data
+    
+
+
+class CompanySerializer(serializers.ModelSerializer):
+    owner_email = serializers.EmailField(source="owner.email", read_only=True)
+
+    class Meta:
+        model = Company
+        fields = [
+            "id",
+            "name",
+            "license_number",
+            "phone",
+            "address",
+            "status",
+            "created_at",
+            "owner_email",
+        ]

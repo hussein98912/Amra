@@ -45,4 +45,11 @@ class PackageSerializer(serializers.ModelSerializer):
 
         return data
         
-        
+class PackageStatusUpdateSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(choices=[("ACTIVE", "Approve"), ("CLOSED", "Reject")])
+    reason = serializers.CharField(required=False, allow_blank=True)
+
+    def validate(self, attrs):
+        if attrs["status"] == "CLOSED" and not attrs.get("reason"):
+            raise serializers.ValidationError("Reject reason is required when rejecting a package.")
+        return attrs

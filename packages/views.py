@@ -56,3 +56,5 @@ class PackageViewSet(viewsets.ModelViewSet):
             serializer.save(status=self.get_object().status)
         else:
             serializer.save()
+
+

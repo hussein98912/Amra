@@ -5,7 +5,7 @@ from django.urls import path
 router = DefaultRouter()
 
 router.register("admin/pilgrims", PilgrimViewSet, basename="admin-pilgrims")
-router.register("admin/companies", CompanyUsersViewSet, basename="admin-companies")
+router.register("admin/companies", CompanyViewSet, basename="admin-companies")
 router.register("admin/bookings", AdminBookingViewSet, basename="admin-bookings")
 router.register("admin/employees", AdminCompanyEmployeesView, basename="admin-employees")
 
@@ -15,4 +15,5 @@ urlpatterns = router.urls + [
     path("admin/company/<int:id>/", AdminCompanyDetailView.as_view(), name="admin-company-detail"),
     path("admin/pilgrim/<int:id>/", AdminPilgrimDetailView.as_view(), name="admin-pilgrim-detail"),
     path("companies/<int:company_id>/approve-reject/", CompanyApproveRejectView.as_view()),
+    path("packages/<int:package_id>/update-status/", PackageStatusUpdateView.as_view(), name="package-update-status"),
 ]

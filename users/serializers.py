@@ -3,6 +3,7 @@ from .models import User
 from django.contrib.auth import authenticate
 from django.db import transaction
 from bookings.models import Booking
+from companies.models import Company
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -138,6 +139,7 @@ class UserSerializer(serializers.ModelSerializer):
             "created_at",
             "pilgrim_profile"
         ]
+
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):

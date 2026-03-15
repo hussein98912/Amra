@@ -17,15 +17,20 @@ class CompanyRegisterView(APIView):
         serializer = CompanyRegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        # Save the company and user
+        # Save the company
         company = serializer.save()
-        user = company.owner
+        user = company.owner  # Get the owner user instance
+
+        # ✅ If the user role is COMPANY, set status to ACTIVE
+        if user.role == "COMPANY":
+            user.status = "ACTIVE"
+            user.save(update_fields=["status"])
 
         # Serialize full user data (with company info)
         user_data = UserSerializer(user).data
 
         return Response({
-            "message": "Company registered successfully. Waiting for approval.",
+            "message": "Company registered successfully.",
             "user": user_data
         }, status=status.HTTP_201_CREATED)
 

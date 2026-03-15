@@ -14,7 +14,8 @@ from companies.models import Company
 from .serializers import *
 from rest_framework import status
 from notifications.models import Notification
-
+from packages.models import Package
+from packages.serializers import PackageStatusUpdateSerializer
 
 User = get_user_model()
 
@@ -27,12 +28,12 @@ class PilgrimViewSet(ReadOnlyModelViewSet):
     queryset = User.objects.filter(role="PILGRIM")
 
 
-class CompanyUsersViewSet(ReadOnlyModelViewSet):
-
-    serializer_class = UserSerializer
+class CompanyViewSet(ReadOnlyModelViewSet):
+    serializer_class = CompanySerializer
     permission_classes = [IsAdminUser]
 
-    queryset = User.objects.filter(role="COMPANY")
+    # Filter only companies that have a user role of COMPANY
+    queryset = Company.objects.all()
 
 
 class AdminBookingViewSet(ReadOnlyModelViewSet):
@@ -120,4 +121,39 @@ class CompanyApproveRejectView(APIView):
             "message": f"Company {company.status} successfully.",
             "company_id": company.id,
             "status": company.status
+        }, status=status.HTTP_200_OK)
+    
+
+class PackageStatusUpdateView(APIView):
+    permission_classes = [IsAdminUser]  # only superusers
+
+    def post(self, request, package_id):
+        try:
+            package = Package.objects.get(id=package_id)
+        except Package.DoesNotExist:
+            return Response({"error": "Package not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PackageStatusUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        status_value = serializer.validated_data["status"]
+        reason = serializer.validated_data.get("reason", "")
+
+        # Update package
+        package.status = status_value
+        if status_value == "CLOSED":
+            package.reject_reason = reason
+        package.save()
+
+        # Send notification to company owner
+        if status_value == "ACTIVE":
+            message = f"Your package '{package.title}' has been approved."
+        else:
+            message = f"Your package '{package.title}' was rejected. Reason: {reason}"
+
+        Notification.objects.create(user=package.company.owner, message=message)
+
+        return Response({
+            "message": f"Package {status_value.lower()} successfully.",
+            "package_id": package.id
         }, status=status.HTTP_200_OK)
