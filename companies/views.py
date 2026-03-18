@@ -7,6 +7,7 @@ from .models import *
 from rest_framework.parsers import MultiPartParser, FormParser
 from users.models import User
 from users.serializers import UserSerializer
+from rest_framework import generics, permissions
 
 
 class CompanyRegisterView(APIView):
@@ -495,3 +496,77 @@ class MyCompanyEmployeesView(APIView):
             "message": "Company employees retrieved successfully",
             "employees": serializer.data
         })
+    
+
+class EmployeeSelfFullUpdateView(generics.RetrieveUpdateAPIView):
+    """
+    Employee can update all of their info (User + Profile fields)
+    """
+    serializer_class = FullEmployeeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+
+class EmployeeDeleteView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, user_id):
+        # ✅ تأكد أنه owner
+        company = Company.objects.filter(owner=request.user).first()
+        if not company:
+            return Response(
+                {"detail": "You are not a company owner."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        try:
+            # ✅ أهم سطر (تأمين)
+            employee = User.objects.get(id=user_id, company=company)
+
+            # ❌ منع حذف owner نفسه
+            if employee == request.user:
+                return Response(
+                    {"detail": "You cannot delete yourself."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # ❌ منع حذف superuser
+            if employee.is_superuser:
+                return Response(
+                    {"detail": "Cannot delete admin user."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            employee.delete()
+
+            return Response(
+                {"detail": "Employee deleted successfully."},
+                status=status.HTTP_200_OK
+            )
+
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "Employee not found in your company."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+
+class EmployeeListByTypeView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        profile_type = self.request.query_params.get("type")
+        company = Company.objects.filter(owner=self.request.user).first()
+        if not company:
+            return User.objects.none()
+
+        if profile_type == "tourist":
+            return User.objects.filter(tourist_profile__isnull=False)
+        elif profile_type == "financial":
+            return User.objects.filter(financial_profile__isnull=False)
+        elif profile_type == "support":
+            return User.objects.filter(support_profile__isnull=False)
+        return User.objects.none()

@@ -240,3 +240,68 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
                 "notes": obj.support_profile.notes
             }
         return None
+    
+
+class FullEmployeeSerializer(serializers.ModelSerializer):
+    license_image = serializers.ImageField(required=False)
+    financial_license_image = serializers.ImageField(required=False)
+    notes = serializers.CharField(required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "license_image",
+            "financial_license_image",
+            "notes",
+        ]
+
+    def validate(self, attrs):
+        user = self.instance
+
+        if user.role != "GUIDE" and "license_image" in attrs:
+            raise serializers.ValidationError("Only guides can update license_image")
+
+        if user.role != "FINANCE" and "financial_license_image" in attrs:
+            raise serializers.ValidationError("Only finance can update financial_license_image")
+
+        if user.role != "SUPPORT" and "notes" in attrs:
+            raise serializers.ValidationError("Only support can update notes")
+
+        return attrs
+
+    def update(self, instance, validated_data):
+        # ✅ تحديث email (اختياري)
+        if "email" in validated_data:
+            instance.email = validated_data["email"]
+            instance.save()
+
+        # ✅ حسب نوع الموظف
+        if instance.role == "GUIDE":
+            if not hasattr(instance, "tourist_profile"):
+                raise serializers.ValidationError("Tourist profile not found")
+
+            profile = instance.tourist_profile
+            if "license_image" in validated_data:
+                profile.license_image = validated_data["license_image"]
+            profile.save()
+
+        elif instance.role == "FINANCE":
+            if not hasattr(instance, "financial_profile"):
+                raise serializers.ValidationError("Financial profile not found")
+
+            profile = instance.financial_profile
+            if "financial_license_image" in validated_data:
+                profile.financial_license_image = validated_data["financial_license_image"]
+            profile.save()
+
+        elif instance.role == "SUPPORT":
+            if not hasattr(instance, "support_profile"):
+                raise serializers.ValidationError("Support profile not found")
+
+            profile = instance.support_profile
+            if "notes" in validated_data:
+                profile.notes = validated_data["notes"]
+            profile.save()
+
+        return instance

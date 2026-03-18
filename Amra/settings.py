@@ -124,7 +124,6 @@ CHANNEL_LAYERS = {
         #     "hosts": [("127.0.0.1", 6379)],
         # },
         "CONFIG": {
-            # Render يعطي REDIS_URL تلقائيًا عند إضافة Redis Internal
             "hosts": [os.environ.get("REDIS_URL")],
         },
     },
