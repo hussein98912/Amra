@@ -6,7 +6,9 @@ from .models import ChatRoom, RoomParticipant
 from users.models import User
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
-
+from rest_framework import generics
+from packages.models import Package
+from rest_framework.exceptions import PermissionDenied
 
 class CreateChatRoom(APIView):
     permission_classes = [IsAuthenticated]
@@ -158,3 +160,95 @@ class UserChatRoomsWithUnread(APIView):
             })
 
         return Response(data)   
+    
+
+class SupportListAPIView(generics.ListAPIView):
+    """
+    API endpoint to get all Support staff for all companies for the logged-in Pilgrim.
+    """
+    serializer_class = SupportSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # نفترض أن المعتمر يريد جميع موظفي الدعم لكل الشركات
+        return SupportProfile.objects.filter(user__role="SUPPORT")
+    
+
+
+class PilgrimPackagesAPIView(generics.ListAPIView):
+    """
+    API endpoint to get all packages of the logged-in pilgrim
+    with guide and support staff of the package's company.
+    """
+    serializer_class = PackageWithGuideSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # نفترض أن المعتمر مرتبط بالـ Packages عبر Booking أو حسب تصميمك
+        # إذا لا يوجد Booking، يمكن فلترة حسب شركته أو أي علاقة
+        user = self.request.user
+        if hasattr(user, "pilgrim_profile"):
+            # مثال: إرجاع كل الـ Packages المرتبطة بالشركة التي ينتمي لها
+            return Package.objects.filter(company=user.company, status="ACTIVE")
+        return Package.objects.none()
+    
+
+class CompanyPilgrimsAPIView(generics.ListAPIView):
+    """
+    API endpoint to return all pilgrims who booked packages of the logged-in company
+    """
+    serializer_class = PilgrimSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Ensure the user is a company owner
+        if user.role != "COMPANY" or not user.company:
+            return User.objects.none()
+
+        # Get all confirmed bookings for packages of this company
+        return User.objects.filter(
+            bookings__package__company=user.company,
+            bookings__status="CONFIRMED"
+        ).distinct()
+    
+
+class CompanyEmployeesAPIView(generics.ListAPIView):
+    """
+    API endpoint to get all employees of the logged-in company
+    """
+    serializer_class = EmployeeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Only allow company owners to see their employees
+        if user.role != "COMPANY" or not user.company:
+            return User.objects.none()
+
+        # Return all users within the same company
+        return User.objects.filter(company=user.company)
+    
+
+class PlatformEmployeesAPIView(generics.ListAPIView):
+    """
+    API endpoint to get all platform employees.
+    Only accessible if the logged-in user is:
+    - a platform staff (has staff_profile)
+    OR
+    - a superuser
+    """
+    serializer_class = PlatformStaffSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Allow access only if staff or superuser
+        if not (hasattr(user, "staff_profile") or user.is_superuser):
+            raise PermissionDenied("You must be a staff member or superuser to access this API.")
+
+        # Return all platform staff
+        return PlatformStaffProfile.objects.all().order_by("department", "first_name")

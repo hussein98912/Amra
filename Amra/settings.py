@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework.authtoken",
     "corsheaders",
     "django_filters", 
     "users",
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     "notifications",
     "channels",
     "chat",
+    "platform_admin",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -118,6 +120,9 @@ ASGI_APPLICATION = "Amra.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
+        #         "CONFIG": {
+        #     "hosts": [("127.0.0.1", 6379)],
+        # },
         "CONFIG": {
             # Render يعطي REDIS_URL تلقائيًا عند إضافة Redis Internal
             "hosts": [os.environ.get("REDIS_URL")],

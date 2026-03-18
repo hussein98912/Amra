@@ -21,7 +21,8 @@ class Booking(models.Model):
 
     pilgrim = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="bookings"
     )
 
     package = models.ForeignKey(

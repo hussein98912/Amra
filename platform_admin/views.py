@@ -16,6 +16,10 @@ from rest_framework import status
 from notifications.models import Notification
 from packages.models import Package
 from packages.serializers import PackageStatusUpdateSerializer
+from rest_framework.generics import ListAPIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 
 User = get_user_model()
 
@@ -157,3 +161,126 @@ class PackageStatusUpdateView(APIView):
             "message": f"Package {status_value.lower()} successfully.",
             "package_id": package.id
         }, status=status.HTTP_200_OK)
+    
+
+class CreatePlatformStaffView(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        serializer = PlatformStaffSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        return Response(
+            {
+                "message": "Platform employee created successfully",
+                "user_id": user.id
+            },
+            status=status.HTTP_201_CREATED
+        )
+    
+
+class ManagePlatformStaffView(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def put(self, request, staff_id):
+        try:
+            user = User.objects.get(id=staff_id)
+            profile = user.staff_profile
+        except User.DoesNotExist:
+            return Response(
+                {"error": "Staff not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Update user fields
+        user.email = request.data.get("email", user.email)
+        user.role = request.data.get("role", user.role)
+
+        if "is_active" in request.data:
+            user.is_active = request.data["is_active"]
+
+        user.save()
+
+        # Update profile fields
+        profile.first_name = request.data.get("first_name", profile.first_name)
+        profile.last_name = request.data.get("last_name", profile.last_name)
+        profile.phone = request.data.get("phone", profile.phone)
+        profile.job_title = request.data.get("job_title", profile.job_title)
+
+        profile.save()
+
+        return Response({
+            "message": "Platform staff updated successfully",
+            "is_active": user.is_active
+        })
+
+
+    def delete(self, request, staff_id):
+
+        try:
+            user = User.objects.get(id=staff_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "Staff not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if user.role not in ["SUPPORT", "FINANCE"]:
+            return Response(
+                {"error": "You can only delete platform staff"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user.delete()
+
+        return Response(
+            {"message": "Platform staff deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+
+class FinanceEmployeesView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = PlatformStaffReadSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(role="FINANCE", company=None)
+    
+
+class SupportEmployeesView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = PlatformStaffReadSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(role="SUPPORT", company=None)
+    
+
+
+class SuperuserInfoAPIView(APIView):
+    """
+    Returns the logged-in superuser info along with JWT tokens.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        if not user.is_superuser:
+            raise PermissionDenied("You must be a superuser to access this endpoint.")
+
+        # Generate JWT tokens
+        refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
+
+        serializer = SuperuserInfoSerializer(user)
+
+        return Response({
+            "user": serializer.data,
+            "tokens": {
+                "refresh": str(refresh),
+                "access": str(access)
+            }
+        })

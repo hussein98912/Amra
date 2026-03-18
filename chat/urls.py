@@ -11,4 +11,9 @@ urlpatterns = [
     path("create-group/", CreateGroupChat.as_view(), name="create-group-chat"),
     path("group/<int:room_id>/add-user/", AddUserToGroup.as_view(), name="add-user-group"),
     path("group/<int:room_id>/remove-user/<int:user_id>/", RemoveUserFromGroup.as_view(), name="remove-user-group"),
+    path("companies/", SupportListAPIView.as_view(), name="support-list"),
+    path("my-packages/", PilgrimPackagesAPIView.as_view(), name="pilgrim-packages"),
+    path("company/pilgrims/", CompanyPilgrimsAPIView.as_view(), name="company-pilgrims"),
+    path("company/employees/", CompanyEmployeesAPIView.as_view(), name="company-employees"),
+    path("platform/employees/", PlatformEmployeesAPIView.as_view(), name="platform-employees"),
 ]
