@@ -9,6 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from packages.models import Package
 from rest_framework.exceptions import PermissionDenied
+from django.db.models import Count
 
 class CreateChatRoom(APIView):
     permission_classes = [IsAuthenticated]
@@ -19,16 +20,36 @@ class CreateChatRoom(APIView):
 
         other_user = User.objects.get(id=other_user_id)
 
-        # Pass created_by here
-        room = ChatRoom.objects.create(
-            created_by=user
+        # ✅ Find existing PRIVATE room with exactly these 2 users
+        room = (
+            ChatRoom.objects
+            .filter(room_type="PRIVATE")
+            .annotate(
+                participant_count=Count("participants", distinct=True)
+            )
+            .filter(participant_count=2)
+            .filter(participants=user)
+            .filter(participants=other_user)
+            .first()
         )
 
-        room.participants.add(user)
-        room.participants.add(other_user)
+        if room:
+            return Response({
+                "room_id": room.id,
+                "created": False
+            })
+
+        # ✅ Create new room
+        room = ChatRoom.objects.create(
+            created_by=user,
+            room_type="PRIVATE"
+        )
+
+        room.participants.add(user, other_user)
 
         return Response({
-            "room_id": room.id
+            "room_id": room.id,
+            "created": True
         })
     
 class UserChatRooms(ListAPIView):
