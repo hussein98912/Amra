@@ -131,3 +131,21 @@ class PlatformStaffSerializer(serializers.ModelSerializer):
             "profile_image",
             "created_at"
         ]
+
+class RoomParticipantSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(source="user.id")
+    email = serializers.CharField(source="user.email")
+
+    class Meta:
+        model = RoomParticipant
+        fields = ["user_id", "email", "role", "joined_at"]
+
+
+class RoomDetailSerializer(serializers.ModelSerializer):
+    participants = RoomParticipantSerializer(
+        source="roomparticipant_set", many=True
+    )
+
+    class Meta:
+        model = ChatRoom
+        fields = ["id", "name", "room_type", "participants", "created_at"]

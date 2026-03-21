@@ -121,22 +121,61 @@ class AddUserToGroup(APIView):
 
     def post(self, request, room_id):
 
+        user = request.user
         user_id = request.data.get("user_id")
 
-        user = User.objects.get(id=user_id)
+        # ✅ 1. Check if requester is ADMIN
+        if not RoomParticipant.objects.filter(
+            room_id=room_id,
+            user=user,
+            role="ADMIN"
+        ).exists():
+            raise PermissionDenied("Only admins can add users")
+
+        # ✅ 2. Check if user already exists in group
+        if RoomParticipant.objects.filter(
+            room_id=room_id,
+            user_id=user_id
+        ).exists():
+            return Response({"message": "User already in group"})
+
+        # ✅ 3. Add user
+        new_user = User.objects.get(id=user_id)
 
         RoomParticipant.objects.create(
-            user=user,
+            user=new_user,
             room_id=room_id
         )
 
         return Response({"message": "User added"})
     
+    
 class RemoveUserFromGroup(APIView):
 
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request, room_id, user_id):
+    def delete(self, request, room_id):
+
+        user = request.user
+        user_id = request.data.get("user_id")
+
+        if not user_id:
+            return Response({"error": "user_id is required"}, status=400)
+
+        # ✅ Only admin can remove
+        if not RoomParticipant.objects.filter(
+            room_id=room_id,
+            user=user,
+            role="ADMIN"
+        ).exists():
+            raise PermissionDenied("Only admins can remove users")
+
+        # ✅ Check if user exists in group
+        if not RoomParticipant.objects.filter(
+            room_id=room_id,
+            user_id=user_id
+        ).exists():
+            return Response({"error": "User not in group"}, status=404)
 
         RoomParticipant.objects.filter(
             room_id=room_id,
@@ -273,3 +312,124 @@ class PlatformEmployeesAPIView(generics.ListAPIView):
 
         # Return all platform staff
         return PlatformStaffProfile.objects.all().order_by("department", "first_name")
+    
+
+
+class DeleteGroupChat(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, room_id):
+
+        user = request.user
+
+        # ✅ Get room
+        try:
+            room = ChatRoom.objects.get(id=room_id, room_type="GROUP")
+        except ChatRoom.DoesNotExist:
+            return Response({"error": "Group not found"}, status=404)
+
+        # ✅ Check if user is ADMIN
+        is_admin = RoomParticipant.objects.filter(
+            room=room,
+            user=user,
+            role="ADMIN"
+        ).exists()
+
+        if not is_admin:
+            raise PermissionDenied("Only admins can delete the group")
+
+        # ✅ Delete room (cascade deletes participants & messages)
+        room.delete()
+
+        return Response({"message": "Group deleted successfully"})
+    
+
+
+class LeaveGroup(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, room_id):
+        user = request.user
+
+        participant = RoomParticipant.objects.filter(
+            room_id=room_id,
+            user=user
+        ).first()
+
+        if not participant:
+            return Response({"error": "Not in group"}, status=404)
+
+        # ✅ Check if user is admin
+        is_admin = participant.role == "ADMIN"
+
+        # ✅ Count members before leaving
+        members = RoomParticipant.objects.filter(room_id=room_id)
+
+        # 🔥 CASE 1: If last member → delete group
+        if members.count() == 1:
+            ChatRoom.objects.filter(id=room_id).delete()
+            return Response({"message": "Group deleted (last member left)"})
+
+        # 🔥 CASE 2: If admin → assign new admin
+        if is_admin:
+            new_admin = members.exclude(user=user).first()
+            if new_admin:
+                new_admin.role = "ADMIN"
+                new_admin.save()
+
+        # ✅ Remove current user
+        participant.delete()
+
+        return Response({"message": "You left the group"})
+    
+
+
+class MakeAdmin(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, room_id):
+        user = request.user
+        user_id = request.data.get("user_id")
+
+        # check requester is admin
+        if not RoomParticipant.objects.filter(
+            room_id=room_id,
+            user=user,
+            role="ADMIN"
+        ).exists():
+            raise PermissionDenied("Only admins allowed")
+
+        participant = RoomParticipant.objects.filter(
+            room_id=room_id,
+            user_id=user_id
+        ).first()
+
+        if not participant:
+            return Response({"error": "User not in group"}, status=404)
+
+        participant.role = "ADMIN"
+        participant.save()
+
+        return Response({"message": "User promoted to admin"})
+    
+
+class RoomDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, room_id):
+
+        user = request.user
+
+        try:
+            room = ChatRoom.objects.get(id=room_id)
+        except ChatRoom.DoesNotExist:
+            return Response({"error": "Room not found"}, status=404)
+
+        # ✅ Ensure user is part of the room
+        if not room.participants.filter(id=user.id).exists():
+            raise PermissionDenied("You are not part of this room")
+
+        serializer = RoomDetailSerializer(room)
+
+        return Response(serializer.data)
