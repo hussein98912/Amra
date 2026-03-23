@@ -10,6 +10,7 @@ from rest_framework import generics
 from packages.models import Package
 from rest_framework.exceptions import PermissionDenied
 from django.db.models import Count
+from django.db.models import Count, Q, OuterRef, Subquery
 
 class CreateChatRoom(APIView):
     permission_classes = [IsAuthenticated]
@@ -53,13 +54,38 @@ class CreateChatRoom(APIView):
         })
     
 class UserChatRooms(ListAPIView):
-    serializer_class = ChatRoomSerializer
+    serializer_class = ChatRoomWithMetaSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        # Get all rooms where the user is a participant
-        return ChatRoom.objects.filter(participants=user).order_by("-created_at")
+
+        # Subquery to get last message per room
+        last_message_subquery = Message.objects.filter(
+            room=OuterRef("pk")
+        ).order_by("-created_at")
+
+        return (
+            ChatRoom.objects
+            .filter(participants=user)
+            .annotate(
+                unread_count=Count(
+                    "messages",
+                    filter=~Q(messages__seen_by=user)
+                ),
+                last_message_text=Subquery(
+                    last_message_subquery.values("text")[:1]  # ✅ here
+                ),
+                last_message_time=Subquery(
+                    last_message_subquery.values("created_at")[:1]
+                ),
+                last_message_sender=Subquery(
+                    last_message_subquery.values("sender__email")[:1]
+                ),
+            )
+            .prefetch_related("participants")
+            .order_by("-last_message_time", "-created_at")
+        )
 
 class MessagePagination(PageNumberPagination):
 
@@ -199,27 +225,7 @@ class MarkRoomAsSeen(APIView):
 
         return Response({"message": "Room marked as read", "count": unseen_messages.count()})
     
-
-class UserChatRoomsWithUnread(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        rooms = ChatRoom.objects.filter(participants=user).order_by("-created_at")
-        data = []
-
-        for room in rooms:
-            unread_count = Message.objects.filter(
-                room=room
-            ).exclude(seen_by=user).count()
-
-            data.append({
-                "room_id": room.id,
-                "room_name": room.name or "Private Chat",
-                "unread_messages": unread_count
-            })
-
-        return Response(data)   
+ 
     
 
 class SupportListAPIView(generics.ListAPIView):

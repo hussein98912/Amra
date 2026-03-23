@@ -30,6 +30,7 @@ class PilgrimViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
 
     queryset = User.objects.filter(role="PILGRIM")
+    ordering = ["-created_at"]
 
 
 class CompanyViewSet(ReadOnlyModelViewSet):
@@ -38,6 +39,7 @@ class CompanyViewSet(ReadOnlyModelViewSet):
 
     # Filter only companies that have a user role of COMPANY
     queryset = Company.objects.all()
+    ordering = ["-created_at"]
 
 
 class AdminBookingViewSet(ReadOnlyModelViewSet):
@@ -46,6 +48,7 @@ class AdminBookingViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
 
     queryset = Booking.objects.all().order_by("-created_at")
+    ordering = ["-created_at"]
 
 class AdminCompanyEmployeesView(ReadOnlyModelViewSet):
     queryset = User.objects.filter(role__in=["GUIDE", "FINANCE", "SUPPORT", "COMPANY"])

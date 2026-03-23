@@ -43,13 +43,14 @@ class SupportSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     email = serializers.EmailField(source="user.email")
     company_name = serializers.CharField(source="user.company.name")
+    user_id = serializers.IntegerField(source="user.id", read_only=True) 
 
     class Meta:
         model = SupportProfile
-        fields = ["id", "full_name", "email", "company_name", "notes"]
+        fields = ["id", "user_id", "full_name", "email", "company_name", "notes"]
 
     def get_full_name(self, obj):
-        return f"{obj.user.email}"  # إذا عندك حقل الاسم عند SupportUser غير email استخدمه
+        return f"{obj.user.email}"
 
 
 
@@ -121,6 +122,7 @@ class PlatformStaffSerializer(serializers.ModelSerializer):
         model = PlatformStaffProfile
         fields = [
             "id",
+            "user_id",
             "first_name",
             "last_name",
             "email",
@@ -149,3 +151,69 @@ class RoomDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoom
         fields = ["id", "name", "room_type", "participants", "created_at"]
+
+
+
+class ChatRoomWithMetaSerializer(serializers.ModelSerializer):
+    participants = serializers.SerializerMethodField()
+    unread_messages = serializers.IntegerField(source="unread_count", read_only=True)
+    last_message = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ChatRoom
+        fields = [
+            "id",
+            "name",
+            "participants",
+            "unread_messages",
+            "last_message",
+            "created_at",
+        ]
+
+    def get_participants(self, obj):
+        data = []
+
+        for u in obj.participants.all():
+            name = None
+
+            # ✅ 1. PILGRIM
+            if u.role == "PILGRIM" and hasattr(u, "pilgrim_profile"):
+                name = u.pilgrim_profile.full_name
+
+            # ✅ 2. COMPANY OWNER
+            elif u.role == "COMPANY" and u.company:
+                name = u.company.name
+
+            # ✅ 3. COMPANY EMPLOYEES (GUIDE / FINANCE)
+            elif u.role in ["GUIDE", "FINANCE"]:
+                # If they belong to a company
+                if u.company:
+                    # Try to get personal name later if you add profile
+                    name = u.company.name
+
+            # ✅ 4. PLATFORM STAFF (SUPPORT / FINANCE in platform)
+            if hasattr(u, "staff_profile"):
+                staff = u.staff_profile
+                name = f"{staff.first_name} {staff.last_name}".strip()
+
+            # ✅ 5. FALLBACK (very important)   
+            if not name:
+                name = u.email
+
+            data.append({
+                "id": u.id,
+                "email": u.email,
+                "name": name
+            })
+
+        return data
+
+    def get_last_message(self, obj):
+        if not obj.last_message_text:
+            return None
+
+        return {
+            "content": obj.last_message_text,
+            "sender": obj.last_message_sender,
+            "created_at": obj.last_message_time
+        }

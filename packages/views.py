@@ -27,16 +27,16 @@ class PackageViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
 
-        # Superuser → كل الباقات
+        # Superuser → all packages
         if user.is_superuser:
-            return Package.objects.all()
+            return Package.objects.all().order_by("-created_at")
 
-        # Company → فقط باقات الشركة (Draft + Active)
+        # Company → only their packages
         if user.is_authenticated and user.role == "COMPANY":
-            return Package.objects.filter(company=user.company)
+            return Package.objects.filter(company=user.company).order_by("-created_at")
 
-        # Pilgrim → فقط Active
-        return Package.objects.filter(status="ACTIVE")
+        # Pilgrim → only ACTIVE
+        return Package.objects.filter(status="ACTIVE").order_by("-created_at")
 
     def perform_create(self, serializer):
         user = self.request.user

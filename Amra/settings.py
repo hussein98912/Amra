@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "channels",
     "chat",
     "platform_admin",
+    "tickets",
 ]
 
 AUTH_USER_MODEL = "users.User"
