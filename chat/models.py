@@ -44,7 +44,6 @@ class RoomParticipant(models.Model):
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
 
     role = models.CharField(
@@ -53,7 +52,19 @@ class RoomParticipant(models.Model):
         default="MEMBER"
     )
 
+    # ✅ ADD THIS (core of the system)
+    last_seen_message = models.ForeignKey(
+        "Message",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+"
+    )
+
     joined_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "room")  # ✅ VERY IMPORTANT
 
 
 class Message(models.Model):

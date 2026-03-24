@@ -164,6 +164,7 @@ class ChatRoomWithMetaSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "room_type",
             "participants",
             "unread_messages",
             "last_message",

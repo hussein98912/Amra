@@ -10,7 +10,7 @@ from rest_framework import generics
 from packages.models import Package
 from rest_framework.exceptions import PermissionDenied
 from django.db.models import Count
-from django.db.models import Count, Q, OuterRef, Subquery
+from django.db.models import Count, Q, OuterRef, Subquery,F
 
 class CreateChatRoom(APIView):
     permission_classes = [IsAuthenticated]
@@ -60,7 +60,6 @@ class UserChatRooms(ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        # Subquery to get last message per room
         last_message_subquery = Message.objects.filter(
             room=OuterRef("pk")
         ).order_by("-created_at")
@@ -68,13 +67,24 @@ class UserChatRooms(ListAPIView):
         return (
             ChatRoom.objects
             .filter(participants=user)
+
+            # ✅ VERY IMPORTANT (link participant correctly)
+            .filter(roomparticipant__user=user)
+
             .annotate(
                 unread_count=Count(
                     "messages",
-                    filter=~Q(messages__seen_by=user)
+                    filter=(
+                        (
+                            Q(messages__id__gt=F("roomparticipant__last_seen_message")) |
+                            Q(roomparticipant__last_seen_message__isnull=True)
+                        )
+                        & ~Q(messages__sender=user)
+                    )
                 ),
+
                 last_message_text=Subquery(
-                    last_message_subquery.values("text")[:1]  # ✅ here
+                    last_message_subquery.values("text")[:1]
                 ),
                 last_message_time=Subquery(
                     last_message_subquery.values("created_at")[:1]
@@ -216,14 +226,22 @@ class MarkRoomAsSeen(APIView):
 
     def post(self, request, room_id):
         user = request.user
-        room = ChatRoom.objects.get(id=room_id)
+        last_message_id = request.data.get("last_message_id")
 
-        # Add this user to seen_by for all messages not yet seen
-        unseen_messages = Message.objects.filter(room=room).exclude(seen_by=user)
-        for msg in unseen_messages:
-            msg.seen_by.add(user)
+        if not last_message_id:
+            return Response({"error": "last_message_id required"}, status=400)
 
-        return Response({"message": "Room marked as read", "count": unseen_messages.count()})
+        try:
+            message = Message.objects.get(id=last_message_id, room_id=room_id)
+        except Message.DoesNotExist:
+            return Response({"error": "Invalid message"}, status=400)
+
+        participant = RoomParticipant.objects.get(user=user, room_id=room_id)
+
+        participant.last_seen_message = message
+        participant.save(update_fields=["last_seen_message"])
+
+        return Response({"message": "Seen updated"})
     
  
     
