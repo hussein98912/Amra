@@ -19,4 +19,5 @@ urlpatterns = [
     path("company/pilgrims/", CompanyPilgrimsAPIView.as_view(), name="company-pilgrims"),
     path("company/employees/", CompanyEmployeesAPIView.as_view(), name="company-employees"),
     path("platform/employees/", PlatformEmployeesAPIView.as_view(), name="platform-employees"),
+    
 ]   

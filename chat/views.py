@@ -1,16 +1,27 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from.serializers import *
-from .models import ChatRoom, RoomParticipant
+from .serializers import (
+    ChatRoomWithMetaSerializer,
+    MessageSerializer,
+    RoomDetailSerializer,
+    SupportSerializer,
+    PackageWithGuideSerializer,
+    PilgrimSerializer,
+    EmployeeSerializer,
+    PlatformStaffSerializer,
+)
+from .models import ChatRoom, RoomParticipant, Message
 from users.models import User
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from packages.models import Package
 from rest_framework.exceptions import PermissionDenied
-from django.db.models import Count
-from django.db.models import Count, Q, OuterRef, Subquery,F
+from django.db.models import Count, Q, OuterRef, Subquery, F
+from companies.models import SupportProfile
+from platform_admin.models import PlatformStaffProfile
+
 
 class CreateChatRoom(APIView):
     permission_classes = [IsAuthenticated]
@@ -19,7 +30,19 @@ class CreateChatRoom(APIView):
         user = request.user
         other_user_id = request.data.get("user_id")
 
-        other_user = User.objects.get(id=other_user_id)
+        # ✅ Fix #6 - validate user_id exists in request
+        if not other_user_id:
+            return Response({"error": "user_id is required"}, status=400)
+
+        # ✅ Prevent self-chat
+        if str(other_user_id) == str(user.id):
+            return Response({"error": "Cannot create a room with yourself"}, status=400)
+
+        # ✅ Fix #3 - handle user not found
+        try:
+            other_user = User.objects.get(id=other_user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
 
         # ✅ Find existing PRIVATE room with exactly these 2 users
         room = (
@@ -51,8 +74,9 @@ class CreateChatRoom(APIView):
         return Response({
             "room_id": room.id,
             "created": True
-        })
-    
+        }, status=201)
+
+
 class UserChatRooms(ListAPIView):
     serializer_class = ChatRoomWithMetaSerializer
     permission_classes = [IsAuthenticated]
@@ -67,10 +91,7 @@ class UserChatRooms(ListAPIView):
         return (
             ChatRoom.objects
             .filter(participants=user)
-
-            # ✅ VERY IMPORTANT (link participant correctly)
             .filter(roomparticipant__user=user)
-
             .annotate(
                 unread_count=Count(
                     "messages",
@@ -82,7 +103,6 @@ class UserChatRooms(ListAPIView):
                         & ~Q(messages__sender=user)
                     )
                 ),
-
                 last_message_text=Subquery(
                     last_message_subquery.values("text")[:1]
                 ),
@@ -97,36 +117,44 @@ class UserChatRooms(ListAPIView):
             .order_by("-last_message_time", "-created_at")
         )
 
-class MessagePagination(PageNumberPagination):
 
+class MessagePagination(PageNumberPagination):
     page_size = 20
 
 
 class RoomMessages(ListAPIView):
-
     serializer_class = MessageSerializer
-    pagination_class = MessagePagination
+    permission_classes = [IsAuthenticated]  # ✅ Fix - was missing
 
     def get_queryset(self):
-
         room_id = self.kwargs["room_id"]
+        user = self.request.user
 
-        return Message.objects.filter(
-            room_id=room_id
-        ).order_by("-created_at")
+        # ✅ Fix #1 - check user is a participant
+        if not ChatRoom.objects.filter(id=room_id, participants=user).exists():
+            raise PermissionDenied("You are not part of this room")
+
+        return (
+            Message.objects
+            .filter(room_id=room_id)
+            .prefetch_related("seen_by")  # ✅ Fix #11 - avoid N+1 on seen_by
+            .order_by("-created_at")
+        )
 
 
 class CreateGroupChat(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-
         name = request.data.get("name")
         users = request.data.get("users", [])
 
+        # ✅ Fix #15 - validate group name
+        if not name or not name.strip():
+            return Response({"error": "Group name is required"}, status=400)
+
         room = ChatRoom.objects.create(
-            name=name,
+            name=name.strip(),
             room_type="GROUP",
             created_by=request.user
         )
@@ -138,8 +166,11 @@ class CreateGroupChat(APIView):
         )
 
         for uid in users:
-
-            user = User.objects.get(id=uid)
+            # ✅ Fix #3 - handle user not found in loop
+            try:
+                user = User.objects.get(id=uid)
+            except User.DoesNotExist:
+                continue  # skip invalid users silently, or return error if you prefer
 
             RoomParticipant.objects.create(
                 user=user,
@@ -149,18 +180,21 @@ class CreateGroupChat(APIView):
         return Response({
             "room_id": room.id,
             "message": "Group created"
-        })
-    
-class AddUserToGroup(APIView):
+        }, status=201)
 
+
+class AddUserToGroup(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, room_id):
-
         user = request.user
         user_id = request.data.get("user_id")
 
-        # ✅ 1. Check if requester is ADMIN
+        # ✅ Validate user_id
+        if not user_id:
+            return Response({"error": "user_id is required"}, status=400)
+
+        # ✅ Check if requester is ADMIN
         if not RoomParticipant.objects.filter(
             room_id=room_id,
             user=user,
@@ -168,30 +202,31 @@ class AddUserToGroup(APIView):
         ).exists():
             raise PermissionDenied("Only admins can add users")
 
-        # ✅ 2. Check if user already exists in group
+        # ✅ Check if user already exists in group
         if RoomParticipant.objects.filter(
             room_id=room_id,
             user_id=user_id
         ).exists():
             return Response({"message": "User already in group"})
 
-        # ✅ 3. Add user
-        new_user = User.objects.get(id=user_id)
+        # ✅ Fix #3 - handle user not found
+        try:
+            new_user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
 
         RoomParticipant.objects.create(
             user=new_user,
             room_id=room_id
         )
 
-        return Response({"message": "User added"})
-    
-    
-class RemoveUserFromGroup(APIView):
+        return Response({"message": "User added"}, status=201)
 
+
+class RemoveUserFromGroup(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, room_id):
-
         user = request.user
         user_id = request.data.get("user_id")
 
@@ -206,20 +241,22 @@ class RemoveUserFromGroup(APIView):
         ).exists():
             raise PermissionDenied("Only admins can remove users")
 
-        # ✅ Check if user exists in group
-        if not RoomParticipant.objects.filter(
+        # ✅ Fix #14 - prevent removing another admin
+        target = RoomParticipant.objects.filter(
             room_id=room_id,
             user_id=user_id
-        ).exists():
+        ).first()
+
+        if not target:
             return Response({"error": "User not in group"}, status=404)
 
-        RoomParticipant.objects.filter(
-            room_id=room_id,
-            user_id=user_id
-        ).delete()
+        if target.role == "ADMIN":
+            return Response({"error": "Cannot remove an admin from the group"}, status=400)
+
+        target.delete()
 
         return Response({"message": "User removed"})
-    
+
 
 class MarkRoomAsSeen(APIView):
     permission_classes = [IsAuthenticated]
@@ -236,124 +273,90 @@ class MarkRoomAsSeen(APIView):
         except Message.DoesNotExist:
             return Response({"error": "Invalid message"}, status=400)
 
-        participant = RoomParticipant.objects.get(user=user, room_id=room_id)
+        # ✅ Fix #5 - handle participant not found
+        try:
+            participant = RoomParticipant.objects.get(user=user, room_id=room_id)
+        except RoomParticipant.DoesNotExist:
+            return Response({"error": "You are not part of this room"}, status=403)
 
         participant.last_seen_message = message
         participant.save(update_fields=["last_seen_message"])
 
         return Response({"message": "Seen updated"})
-    
- 
-    
+
 
 class SupportListAPIView(generics.ListAPIView):
-    """
-    API endpoint to get all Support staff for all companies for the logged-in Pilgrim.
-    """
     serializer_class = SupportSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # نفترض أن المعتمر يريد جميع موظفي الدعم لكل الشركات
-        return SupportProfile.objects.filter(user__role="SUPPORT")
-    
+        return SupportProfile.objects.filter(user__role="SUPPORT").select_related("user", "user__company")
 
 
 class PilgrimPackagesAPIView(generics.ListAPIView):
-    """
-    API endpoint to get all packages of the logged-in pilgrim
-    with guide and support staff of the package's company.
-    """
     serializer_class = PackageWithGuideSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # نفترض أن المعتمر مرتبط بالـ Packages عبر Booking أو حسب تصميمك
-        # إذا لا يوجد Booking، يمكن فلترة حسب شركته أو أي علاقة
         user = self.request.user
         if hasattr(user, "pilgrim_profile"):
-            # مثال: إرجاع كل الـ Packages المرتبطة بالشركة التي ينتمي لها
             return Package.objects.filter(company=user.company, status="ACTIVE")
         return Package.objects.none()
-    
+
 
 class CompanyPilgrimsAPIView(generics.ListAPIView):
-    """
-    API endpoint to return all pilgrims who booked packages of the logged-in company
-    """
     serializer_class = PilgrimSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
 
-        # Ensure the user is a company owner
         if user.role != "COMPANY" or not user.company:
             return User.objects.none()
 
-        # Get all confirmed bookings for packages of this company
         return User.objects.filter(
             bookings__package__company=user.company,
             bookings__status="CONFIRMED"
         ).distinct()
-    
+
 
 class CompanyEmployeesAPIView(generics.ListAPIView):
-    """
-    API endpoint to get all employees of the logged-in company
-    """
     serializer_class = EmployeeSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
 
-        # Only allow company owners to see their employees
         if user.role != "COMPANY" or not user.company:
             return User.objects.none()
 
-        # Return all users within the same company
         return User.objects.filter(company=user.company)
-    
+
 
 class PlatformEmployeesAPIView(generics.ListAPIView):
-    """
-    API endpoint to get all platform employees.
-    Only accessible if the logged-in user is:
-    - a platform staff (has staff_profile)
-    OR
-    - a superuser
-    """
     serializer_class = PlatformStaffSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
 
-        # Allow access only if staff or superuser
         if not (hasattr(user, "staff_profile") or user.is_superuser):
             raise PermissionDenied("You must be a staff member or superuser to access this API.")
 
-        # Return all platform staff
         return PlatformStaffProfile.objects.all().order_by("department", "first_name")
-    
 
 
 class DeleteGroupChat(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, room_id):
-
         user = request.user
 
-        # ✅ Get room
         try:
             room = ChatRoom.objects.get(id=room_id, room_type="GROUP")
         except ChatRoom.DoesNotExist:
             return Response({"error": "Group not found"}, status=404)
 
-        # ✅ Check if user is ADMIN
         is_admin = RoomParticipant.objects.filter(
             room=room,
             user=user,
@@ -363,11 +366,9 @@ class DeleteGroupChat(APIView):
         if not is_admin:
             raise PermissionDenied("Only admins can delete the group")
 
-        # ✅ Delete room (cascade deletes participants & messages)
         room.delete()
 
         return Response({"message": "Group deleted successfully"})
-    
 
 
 class LeaveGroup(APIView):
@@ -384,29 +385,25 @@ class LeaveGroup(APIView):
         if not participant:
             return Response({"error": "Not in group"}, status=404)
 
-        # ✅ Check if user is admin
         is_admin = participant.role == "ADMIN"
 
-        # ✅ Count members before leaving
         members = RoomParticipant.objects.filter(room_id=room_id)
 
-        # 🔥 CASE 1: If last member → delete group
+        # If last member → delete group
         if members.count() == 1:
             ChatRoom.objects.filter(id=room_id).delete()
             return Response({"message": "Group deleted (last member left)"})
 
-        # 🔥 CASE 2: If admin → assign new admin
+        # If admin → assign new admin before leaving
         if is_admin:
             new_admin = members.exclude(user=user).first()
             if new_admin:
                 new_admin.role = "ADMIN"
                 new_admin.save()
 
-        # ✅ Remove current user
         participant.delete()
 
         return Response({"message": "You left the group"})
-    
 
 
 class MakeAdmin(APIView):
@@ -416,7 +413,10 @@ class MakeAdmin(APIView):
         user = request.user
         user_id = request.data.get("user_id")
 
-        # check requester is admin
+        # ✅ Validate user_id
+        if not user_id:
+            return Response({"error": "user_id is required"}, status=400)
+
         if not RoomParticipant.objects.filter(
             room_id=room_id,
             user=user,
@@ -436,13 +436,12 @@ class MakeAdmin(APIView):
         participant.save()
 
         return Response({"message": "User promoted to admin"})
-    
+
 
 class RoomDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, room_id):
-
         user = request.user
 
         try:
@@ -450,7 +449,6 @@ class RoomDetailAPIView(APIView):
         except ChatRoom.DoesNotExist:
             return Response({"error": "Room not found"}, status=404)
 
-        # ✅ Ensure user is part of the room
         if not room.participants.filter(id=user.id).exists():
             raise PermissionDenied("You are not part of this room")
 
