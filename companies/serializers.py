@@ -243,6 +243,7 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
     
 
 class FullEmployeeSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(required=False)  # ✅ add full_name
     license_image = serializers.ImageField(required=False)
     financial_license_image = serializers.ImageField(required=False)
     notes = serializers.CharField(required=False)
@@ -250,6 +251,7 @@ class FullEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            "full_name",  # added here
             "email",
             "license_image",
             "financial_license_image",
@@ -271,10 +273,15 @@ class FullEmployeeSerializer(serializers.ModelSerializer):
         return attrs
 
     def update(self, instance, validated_data):
+        # ✅ تحديث full_name
+        if "full_name" in validated_data:
+            instance.full_name = validated_data["full_name"]
+
         # ✅ تحديث email (اختياري)
         if "email" in validated_data:
             instance.email = validated_data["email"]
-            instance.save()
+
+        instance.save()
 
         # ✅ حسب نوع الموظف
         if instance.role == "GUIDE":
