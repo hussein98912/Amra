@@ -35,7 +35,6 @@ class Company(models.Model):
 
 
 class TouristGuideProfile(models.Model):
-
     user = models.OneToOneField(
         "users.User",
         on_delete=models.CASCADE,
@@ -47,7 +46,6 @@ class TouristGuideProfile(models.Model):
 
 
 class FinancialProfile(models.Model):
-
     user = models.OneToOneField(
         "users.User",
         on_delete=models.CASCADE,
@@ -58,7 +56,6 @@ class FinancialProfile(models.Model):
 
 
 class SupportProfile(models.Model):
-
     user = models.OneToOneField(
         "users.User",
         on_delete=models.CASCADE,

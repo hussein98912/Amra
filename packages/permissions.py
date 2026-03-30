@@ -15,11 +15,15 @@ class PackagePermission(BasePermission):
 
         user = request.user
 
+        # ✅ السماح للقراءة (GET, HEAD, OPTIONS)
+        if request.method in SAFE_METHODS:
+            return True
+
         # ⭐ Superuser full access
         if user.is_superuser:
             return True
 
-        # ⭐ Company owner can edit/delete but NOT status
+        # ⭐ Company owner
         if user.role == "COMPANY":
             return obj.company == user.company
 

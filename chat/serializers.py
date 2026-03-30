@@ -86,16 +86,30 @@ class PackageWithGuideSerializer(serializers.ModelSerializer):
 
 class PilgrimSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
-    email = serializers.EmailField()
+    phone = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["id", "email", "full_name"]
+        fields = ["id", "email", "full_name", "phone"]
 
     def get_full_name(self, obj):
-        if hasattr(obj, "pilgrim_profile"):
-            return obj.pilgrim_profile.full_name
-        return obj.email
+        profile = getattr(obj, "pilgrim_profile", None)
+        return profile.full_name if profile else obj.email
+
+    def get_phone(self, obj):
+        profile = getattr(obj, "pilgrim_profile", None)
+        return profile.phone if profile else None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+
+        user = self.context["request"].user
+
+        if user.role not in ["COMPANY", "GUIDE"]:
+            data.pop("email", None)
+            data.pop("phone", None)
+
+        return data
     
 
 class EmployeeSerializer(serializers.ModelSerializer):

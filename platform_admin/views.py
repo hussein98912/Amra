@@ -287,3 +287,47 @@ class SuperuserInfoAPIView(APIView):
                 "access": str(access)
             }
         })
+    
+
+
+class AdminUserStatusUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, user_id):
+
+        # 🔒 Only staff or superadmin
+        if not request.user.is_staff:
+            return Response(
+                {"error": "Only admin can update user status"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        user = User.objects.filter(id=user_id).first()
+
+        if not user:
+            return Response(
+                {"error": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # 🚨 Prevent admin from disabling himself (optional but recommended)
+        if user == request.user and request.data.get("status") == "REJECTED":
+            return Response(
+                {"error": "You cannot reject yourself"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = UserStatusUpdateSerializer(
+            user,
+            data=request.data,
+            partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({
+            "message": "User status updated successfully",
+            "user_id": user.id,
+            "new_status": user.status
+        })

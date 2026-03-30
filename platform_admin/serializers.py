@@ -170,3 +170,15 @@ class SuperuserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email", "role", "is_superuser", "is_staff", "created_at"]
+
+
+class UserStatusUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["status"]
+
+    def validate_status(self, value):
+        valid_statuses = ["PENDING", "ACTIVE", "REJECTED"]
+        if value not in valid_statuses:
+            raise serializers.ValidationError("Invalid status")
+        return value

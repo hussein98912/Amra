@@ -21,6 +21,7 @@ from rest_framework.exceptions import PermissionDenied
 from django.db.models import Count, Q, OuterRef, Subquery, F
 from companies.models import SupportProfile
 from platform_admin.models import PlatformStaffProfile
+from companies.models import Company
 
 
 class CreateChatRoom(APIView):
@@ -311,11 +312,21 @@ class CompanyPilgrimsAPIView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        if user.role != "COMPANY" or not user.company:
+        company = None
+
+        # ✅ Owner
+        if hasattr(user, "companies") and user.companies.exists():
+            company = user.companies.first()
+
+        # ✅ Employee (NEW unified model)
+        elif hasattr(user, "employee_profile"):
+            company = user.employee_profile.company
+
+        if not company:
             return User.objects.none()
 
         return User.objects.filter(
-            bookings__package__company=user.company,
+            bookings__package__company=company,
             bookings__status="CONFIRMED"
         ).distinct()
 

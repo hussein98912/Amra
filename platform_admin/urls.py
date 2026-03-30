@@ -21,4 +21,5 @@ urlpatterns = router.urls + [
     path("admin/platform-staff/<int:staff_id>/",ManagePlatformStaffView.as_view(),name="manage-platform-staff"),
     path("admin/staff/finance/", FinanceEmployeesView.as_view(), name="finance-staff"),
     path("admin/staff/support/", SupportEmployeesView.as_view(), name="support-staff"),
+    path("admin/users/<int:user_id>/status/", AdminUserStatusUpdateView.as_view()),
 ]
