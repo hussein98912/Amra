@@ -181,19 +181,48 @@ class CompanySerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source="company.name", read_only=True)
     
+    # Profile fields
+    license_image = serializers.SerializerMethodField()
+    financial_license_image = serializers.SerializerMethodField()
+    notes = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = [
             "id",
             "email",
+            "full_name",  # if you want full name
             "role",
             "status",
             "company",
             "company_name",
             "is_active",
             "is_staff",
-            "created_at"
+            "created_at",
+            "license_image",
+            "financial_license_image",
+            "notes",
         ]
+
+    # SerializerMethodField for license_image
+    def get_license_image(self, obj):
+        if hasattr(obj, "tourist_profile") and obj.tourist_profile.license_image:
+            request = self.context.get("request")
+            return request.build_absolute_uri(obj.tourist_profile.license_image.url) if request else obj.tourist_profile.license_image.url
+        return None
+
+    # SerializerMethodField for financial_license_image
+    def get_financial_license_image(self, obj):
+        if hasattr(obj, "financial_profile") and obj.financial_profile.financial_license_image:
+            request = self.context.get("request")
+            return request.build_absolute_uri(obj.financial_profile.financial_license_image.url) if request else obj.financial_profile.financial_license_image.url
+        return None
+
+    # SerializerMethodField for notes
+    def get_notes(self, obj):
+        if hasattr(obj, "support_profile"):
+            return obj.support_profile.notes
+        return None
 
 class EmployeeDetailSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source="company.name", read_only=True)

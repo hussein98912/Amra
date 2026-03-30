@@ -201,29 +201,51 @@ class CompanyEmployeeListView(APIView):
         return Response(result)
     
 class CompanyEmployeeFilterView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-
         role = request.GET.get("role")
 
         if request.user.role not in ["COMPANY", "ADMIN"]:
             return Response({"error": "Permission denied"}, status=403)
 
-        queryset = User.objects.filter(
-            company=request.user.company
-        )
+        queryset = User.objects.filter(company=request.user.company)
 
         if role in ["GUIDE", "FINANCE", "SUPPORT"]:
             queryset = queryset.filter(role=role)
 
-        data = list(queryset.values(
-            "id",
-            "email",
-            "role",
-            "status"
-        ))
+        data = []
+        for user in queryset:
+            item = {
+                "id": user.id,
+                "email": user.email,
+                "role": user.role,
+                "status": user.status,
+            }
+
+            # Add profile fields based on role
+            if user.role == "GUIDE" and hasattr(user, "tourist_profile"):
+                if user.tourist_profile.license_image:
+                    request_obj = self.request
+                    item["license_image"] = request_obj.build_absolute_uri(
+                        user.tourist_profile.license_image.url
+                    )
+                else:
+                    item["license_image"] = None
+
+            elif user.role == "FINANCE" and hasattr(user, "financial_profile"):
+                if user.financial_profile.financial_license_image:
+                    request_obj = self.request
+                    item["financial_license_image"] = request_obj.build_absolute_uri(
+                        user.financial_profile.financial_license_image.url
+                    )
+                else:
+                    item["financial_license_image"] = None
+
+            elif user.role == "SUPPORT" and hasattr(user, "support_profile"):
+                item["notes"] = user.support_profile.notes
+
+            data.append(item)
 
         return Response(data)
 
