@@ -8,7 +8,8 @@ from django.utils import timezone
 from .models import Ticket
 from .serializers import TicketSerializer
 from companies.models import Company
-
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 # -----------------------------
 # Create Ticket
@@ -118,7 +119,6 @@ class UpdateTicketStatusAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-
         user = request.user
 
         try:
@@ -126,27 +126,44 @@ class UpdateTicketStatusAPIView(APIView):
         except Ticket.DoesNotExist:
             return Response({"error": "Ticket not found"}, status=404)
 
-        # 🟣 PLATFORM (ADMIN / SUPPORT)
+        # -------------------------------
+        # Permission checks
+        # -------------------------------
         if user.role in ["ADMIN", "SUPPORT"]:
             if ticket.target_type != "PLATFORM":
                 raise PermissionDenied("You can only update platform tickets")
-
-        # 🟢 COMPANY
         elif user.role == "COMPANY":
             if ticket.target_type != "COMPANY" or ticket.target_company != user.company:
                 raise PermissionDenied("Not your company ticket")
-
-        # 🔵 PILGRIM
         else:
             raise PermissionDenied("Not allowed")
 
-        # ✅ Validate status
+        # -------------------------------
+        # Validate status
+        # -------------------------------
         status_value = request.data.get("status")
-
         if status_value not in dict(Ticket.STATUS_CHOICES):
             return Response({"error": "Invalid status"}, status=400)
 
         ticket.status = status_value
         ticket.save()
 
-        return Response({"message": "Updated"})
+        # -------------------------------
+        # Send real-time notification
+        # -------------------------------
+        channel_layer = get_channel_layer()
+        group_name = f"notifications_{ticket.created_by.id}"
+
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                "type": "send_notification",  # triggers method in consumer
+                "event": "ticket_status_update",
+                "ticket_id": ticket.id,
+                "status": ticket.status,
+                "updated_by": user.id,
+                "message": f"Your ticket #{ticket.id} status was updated to {ticket.status}"
+            }
+        )
+
+        return Response({"message": "Ticket status updated successfully"})

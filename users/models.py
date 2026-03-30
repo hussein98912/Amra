@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
+    phone = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     objects = UserManager()

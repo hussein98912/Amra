@@ -8,6 +8,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from users.models import User
 from users.serializers import UserSerializer
 from rest_framework import generics, permissions
+from django.shortcuts import get_object_or_404
 
 
 class CompanyRegisterView(APIView):
@@ -105,6 +106,7 @@ class CompanyUserCreateView(APIView):
             password = request.data.get("password")
             role = request.data.get("role")
             full_name = request.data.get("full_name")
+            phone = request.data.get("phone")  # ✅ added
 
             if not email or not password or not role:
                 return Response(
@@ -125,6 +127,7 @@ class CompanyUserCreateView(APIView):
                 email=email,
                 password=password,
                 full_name=full_name,
+                phone=phone,  # ✅ added
                 role=role,
                 company=request.user.company,
                 status=status_value
@@ -594,3 +597,20 @@ class EmployeeListByTypeView(generics.ListAPIView):
         elif profile_type == "support":
             return User.objects.filter(support_profile__isnull=False)
         return User.objects.none()
+    
+
+class UpdateEmployeesAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, employee_id):
+        # Only company owners can update their employees
+        employee = get_object_or_404(User, id=employee_id, company=request.user.company)
+
+        if request.user.role != "COMPANY":
+            return Response({"error": "Permission denied"}, status=403)
+
+        serializer = CompanyUpdateEmployeeSerializer(employee, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

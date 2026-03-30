@@ -429,6 +429,16 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         Handles room update notifications pushed from chat.
         Computes per-room and total unread deltas.
         """
+        if event.get("event") == "ticket_status_update":
+            await self.send(text_data=json.dumps({
+                "type": "ticket_status_update",
+                "ticket_id": event.get("ticket_id"),
+                "status": event.get("status"),
+                "updated_by": event.get("updated_by"),
+                "message": event.get("message")
+            }))
+            return  # skip chat logic
+        
         room_id = event.get("room_id")
         unread_count = event.get("unread_count")  # new unread for this room
 

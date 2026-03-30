@@ -1,0 +1,3177 @@
+{
+  "info": {
+    "_postman_id": "450483d6-cf8e-46fc-97bd-fc0963d44997",
+    "name": "Amra",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "34438671"
+  },
+  "item": [
+    {
+      "name": "Pilgrim",
+      "item": [
+        {
+          "name": "Signin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "test@gmail.com",
+                  "type": "text",
+                  "uuid": "402883a9-7192-4b34-bed1-7aed316db7c7"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "d813043a-26f3-4ed4-ad5a-76ee756eb104"
+                },
+                {
+                  "key": "confirm_password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "0e988162-c680-466f-a120-dcf08378c4db"
+                },
+                {
+                  "key": "first_name",
+                  "value": "ali",
+                  "type": "text",
+                  "uuid": "b08d8d8f-b64e-4e95-92e4-a37fa7aa3ab0"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Ahmed",
+                  "type": "text",
+                  "uuid": "1c20535f-21a5-4d59-ba14-1ab1d095ed4f"
+                },
+                {
+                  "key": "full_name",
+                  "value": "Ali Ahmed",
+                  "type": "text",
+                  "uuid": "e693bd15-25f0-49af-a098-0413e2b46f9a"
+                },
+                {
+                  "key": "phone",
+                  "value": "099999999",
+                  "type": "text",
+                  "uuid": "427554b6-62a1-464e-9f6b-da0bdfd1180a"
+                },
+                {
+                  "key": "passport_number",
+                  "value": "A123456",
+                  "type": "text",
+                  "uuid": "0a09c43b-b00a-4b89-a82b-885209a56727"
+                },
+                {
+                  "key": "nationality",
+                  "value": "SYRIAN",
+                  "type": "text",
+                  "uuid": "f7f7ebd2-6922-49a6-987f-878e5514bf20"
+                },
+                {
+                  "key": "date_of_birth",
+                  "value": "1990-01-01",
+                  "type": "text",
+                  "uuid": "8d1b92d5-c8b4-4eee-9f91-1f388a1c3470"
+                },
+                {
+                  "key": "emergency_contact",
+                  "value": "098888888",
+                  "type": "text",
+                  "uuid": "47eaffcd-ae3c-4ad4-8ebc-c8c558da0387"
+                },
+                {
+                  "key": "profile_image",
+                  "type": "file",
+                  "uuid": "3a3f2a8e-aafc-4a16-b5aa-af72b64d2b15",
+                  "value": null
+                },
+                {
+                  "key": "passport_image",
+                  "type": "file",
+                  "uuid": "ae410c81-d9f2-42d5-8d3f-722cd988e0ba",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/users/pilgrim/register/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "pilgrim",
+                "register",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDc4MDE4LCJpYXQiOjE3NzMzOTE2MTgsImp0aSI6IjNhMGMzYWQxZTdkNDQxMmViNjJmZWE5ZGY1ZGFlOWE0IiwidXNlcl9pZCI6IjYifQ.6OnqP_G7TKsZ8xG--V8k1HNZX4APQZ79Wfmqnlxn17Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/me/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDc4MDE4LCJpYXQiOjE3NzMzOTE2MTgsImp0aSI6IjNhMGMzYWQxZTdkNDQxMmViNjJmZWE5ZGY1ZGFlOWE0IiwidXNlcl9pZCI6IjYifQ.6OnqP_G7TKsZ8xG--V8k1HNZX4APQZ79Wfmqnlxn17Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "new@gmail.com",
+                  "type": "text",
+                  "uuid": "2cd2da28-f3e0-4181-9d28-aaa744948e99"
+                },
+                {
+                  "key": "first_name",
+                  "value": "yahya",
+                  "type": "text",
+                  "uuid": "74a41d6a-56a1-4394-a152-1270b58ccf20"
+                },
+                {
+                  "key": "phone",
+                  "value": "0923123122",
+                  "type": "text",
+                  "uuid": "1915d056-101a-4931-9691-ec5c2fb0dda2"
+                },
+                {
+                  "key": "profile_image",
+                  "type": "file",
+                  "uuid": "76ddace3-0e91-4fe3-ae32-8496621e08aa",
+                  "src": "/C:/Users/slman/Desktop/projects/Untitled.png"
+                },
+                {
+                  "key": "passport_image",
+                  "type": "file",
+                  "uuid": "98d4fd0e-6f85-4829-9a17-ecbd373c044b",
+                  "src": "/C:/Users/slman/Desktop/projects/Untitled.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/users/update-profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "update-profile",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dashborad",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjU4NjUxLCJpYXQiOjE3NzM1NzIyNTEsImp0aSI6IjkwN2ZhYTM4NDQ0ODQ1ZTdhNTMyYjdkODFkOWZmYWI4IiwidXNlcl9pZCI6IjE4In0.QTQPCDcv6H6MM5sAx5ubrTrqSNLUA_tP0ZvleWobYco",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/dashboard/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "dashboard",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Register",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/login/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyNjEzMzg5LCJpYXQiOjE3NzI2MTE1ODksImp0aSI6ImM0MDFjYjE4YzcxMzQxMDc4MmVjMjllZTdiZTk5ODkyIiwidXNlcl9pZCI6IjEifQ.IbbgUOHY0LCP0c869qG6hIzvKui5rz0j9eNABYMVh8k",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3MzIxNjM4OSwiaWF0IjoxNzcyNjExNTg5LCJqdGkiOiIzZmY5MzYzNmYyZDE0NjZiYTFkNDZiMjhlNDZkMWNkYSIsInVzZXJfaWQiOiIxIn0.zWR3qdXQq3tF9QaK1QcS-XGRsIQWU0D4tMCARqnZPJY\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/logout/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "logout",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Companies",
+      "item": [
+        {
+          "name": "Create Users",
+          "item": [
+            {
+              "name": "Create Guide",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTYxODIyLCJpYXQiOjE3NzQ4NzU0MjMsImp0aSI6IjZmYjgzNGEwMzFmYTRiOTViZDFmMjVmMTc5MDFlMzYyIiwidXNlcl9pZCI6IjEifQ.H8HYcCDCYeRN511rjhHiX7EDFWDSJRucRNHKjZGQRGw",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "guide123@test.com",
+                      "type": "text",
+                      "uuid": "81bc526c-c838-4b33-8da0-f848b3d8900a"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123456",
+                      "type": "text",
+                      "uuid": "d9de15aa-b212-4c58-ac17-ee42b24f128c"
+                    },
+                    {
+                      "key": "role",
+                      "value": "GUIDE",
+                      "type": "text",
+                      "uuid": "4da7ba5d-7217-4de1-9c2a-05ef632df127"
+                    },
+                    {
+                      "key": "license_image",
+                      "type": "file",
+                      "uuid": "8d8d3a02-3c25-4c36-bae1-69fc7667cd07",
+                      "src": "postman-cloud:///1ef137f6-d538-4860-8732-4d02e7df78f9"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "hussein",
+                      "type": "text",
+                      "uuid": "b7be17e4-77ee-4005-bf03-19774a057cfc"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "12312312",
+                      "type": "text",
+                      "uuid": "30afd5b9-d9b6-4a10-be37-61fd26a305fc"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/company/create/users/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "create",
+                    "users",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Finance",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyODA5OTg0LCJpYXQiOjE3NzI4MDgxODQsImp0aSI6ImNlMTgzZWQ2MTQzMjQyZDRhMjRkMTVkMzVmMGEzMjhjIiwidXNlcl9pZCI6IjEifQ.sCr4T5flByuNk3j7wSReutOyfcdtz4T1uMrYHzDBTnI",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "guide@test.com",
+                      "type": "text",
+                      "uuid": "81bc526c-c838-4b33-8da0-f848b3d8900a"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123456",
+                      "type": "text",
+                      "uuid": "d9de15aa-b212-4c58-ac17-ee42b24f128c"
+                    },
+                    {
+                      "key": "role",
+                      "value": "GUIDE",
+                      "type": "text",
+                      "uuid": "4da7ba5d-7217-4de1-9c2a-05ef632df127"
+                    },
+                    {
+                      "key": "license_image",
+                      "type": "file",
+                      "uuid": "8d8d3a02-3c25-4c36-bae1-69fc7667cd07",
+                      "src": "postman-cloud:///1ef137f6-d538-4860-8732-4d02e7df78f9"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/company/create/guide/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "create",
+                    "guide",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Support",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyODA5OTg0LCJpYXQiOjE3NzI4MDgxODQsImp0aSI6ImNlMTgzZWQ2MTQzMjQyZDRhMjRkMTVkMzVmMGEzMjhjIiwidXNlcl9pZCI6IjEifQ.sCr4T5flByuNk3j7wSReutOyfcdtz4T1uMrYHzDBTnI",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "support@test.com",
+                      "type": "text",
+                      "uuid": "81bc526c-c838-4b33-8da0-f848b3d8900a"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123456",
+                      "type": "text",
+                      "uuid": "d9de15aa-b212-4c58-ac17-ee42b24f128c"
+                    },
+                    {
+                      "key": "role",
+                      "value": "SUPPORT",
+                      "type": "text",
+                      "uuid": "4da7ba5d-7217-4de1-9c2a-05ef632df127"
+                    },
+                    {
+                      "key": "notes",
+                      "value": "Technical",
+                      "type": "text",
+                      "uuid": "d503d183-0ec1-4235-a6a4-533bd6fa94f7"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/company/create/users/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "create",
+                    "users",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Emp Self Edit",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTYwMzgyLCJpYXQiOjE3NzQ4NzM5ODIsImp0aSI6IjI0ZDViZDlkZDhlZjRhMmU5MzViMTA3MzA4MmFmMjQ5IiwidXNlcl9pZCI6IjMxIn0.HqeSIPbKRlqBw73RhrZhLld_tKsCqhmlwUZP9pDUkLo",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "full_name",
+                      "value": "ammar",
+                      "type": "text",
+                      "uuid": "366310b1-02aa-4f8c-ba64-352972152bc9"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "12321312",
+                      "type": "text",
+                      "uuid": "1922a1ac-22a3-4857-be40-4e8377dd1db8"
+                    },
+                    {
+                      "key": "license_image",
+                      "type": "file",
+                      "uuid": "e0f9039f-7c60-4351-a517-bbc8d36c9a40",
+                      "value": null
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/company/employee/self-update/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "employee",
+                    "self-update",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Emp",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczOTMzNjgzLCJpYXQiOjE3NzM4NDcyODMsImp0aSI6Ijk2MjRiNjZlZTRiZjQ0ZTk5YTk0OTc3OWY4ZWYyOTA2IiwidXNlcl9pZCI6IjEifQ.XCrw1E7pz3XVDj8Dg8WcNI8yoA1ClfABz9yCsT5WtKk",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/company/employee/delete/28/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "employee",
+                    "delete",
+                    "28",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Emp By Type",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczOTMzNjgzLCJpYXQiOjE3NzM4NDcyODMsImp0aSI6Ijk2MjRiNjZlZTRiZjQ0ZTk5YTk0OTc3OWY4ZWYyOTA2IiwidXNlcl9pZCI6IjEifQ.XCrw1E7pz3XVDj8Dg8WcNI8yoA1ClfABz9yCsT5WtKk",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/company/employee-search/?type=support",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "employee-search",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "support"
+                    }
+                  ]
+                },
+                "description": "types:  \n1-support  \n2-tourist  \n3-financial"
+              },
+              "response": []
+            },
+            {
+              "name": "Emp Edit",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTY0MzQ4LCJpYXQiOjE3NzQ4Nzc5NDgsImp0aSI6IjAwZWExMDAzZWEyZDQ3YWM4MjRlMDE1ZTQwMDZkMzcwIiwidXNlcl9pZCI6IjEifQ.QtJZNSQoXJk03joa1UGKdu6Q22GN9alhVeDhQiqipZc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "new_email@example.com",
+                      "type": "text",
+                      "uuid": "fc41c47b-312d-4fa9-af89-58d7f6e4db29"
+                    },
+                    {
+                      "key": "full_name",
+                      "value": "John Doe",
+                      "type": "text",
+                      "uuid": "8f131964-723c-4bd0-a01a-94a44bc4ae0f"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "12321312",
+                      "type": "text",
+                      "uuid": "5c5a0948-ad24-452d-b89f-81dee8093c1b"
+                    },
+                    {
+                      "key": "license_image",
+                      "type": "file",
+                      "uuid": "949e4692-e320-44ab-8690-264a1e5be6c2",
+                      "value": null
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/company/employee-company/32/update/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "company",
+                    "employee-company",
+                    "32",
+                    "update",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Company A",
+                  "type": "text"
+                },
+                {
+                  "key": "license_number",
+                  "value": "123213",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "12321321",
+                  "type": "text"
+                },
+                {
+                  "key": "address",
+                  "value": "syria",
+                  "type": "text"
+                },
+                {
+                  "key": "qr_code_image",
+                  "type": "file",
+                  "value": null
+                },
+                {
+                  "key": "id_card_image",
+                  "type": "file",
+                  "value": null
+                },
+                {
+                  "key": "email",
+                  "value": "example112122@gmail.com",
+                  "type": "text",
+                  "uuid": "3f6009be-0403-47a4-8bc7-fb8191296c44"
+                },
+                {
+                  "key": "password",
+                  "value": "123123",
+                  "type": "text",
+                  "uuid": "031f9c88-ae3e-45db-be7a-739131eae374"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/company/register/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "register",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all employees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTAyNTQxLCJpYXQiOjE3NzQ4MTYxNDEsImp0aSI6IjAzMTc0YzM1MTAyZTRhYzE4N2Y1YzFkNGJhMTBkMTEwIiwidXNlcl9pZCI6IjEifQ.X1X38JphVKT58jiaMsEwz4eCP7Lxfc7tDcXiVLbi7Tw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/employees",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "employees"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Employees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTYxODIyLCJpYXQiOjE3NzQ4NzU0MjMsImp0aSI6IjZmYjgzNGEwMzFmYTRiOTViZDFmMjVmMTc5MDFlMzYyIiwidXNlcl9pZCI6IjEifQ.H8HYcCDCYeRN511rjhHiX7EDFWDSJRucRNHKjZGQRGw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/employees/filter/?role=GUIDE",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "employees",
+                "filter",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "GUIDE"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Employee by its id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyODExNDQ1LCJpYXQiOjE3NzI4MDk2NDUsImp0aSI6ImNjZmY0YjY3MmZhNjQxMzFhM2U1NmU5OGZjMDZmYjc2IiwidXNlcl9pZCI6IjEifQ.D5AkwSeky5fKZKrIoNykRI5fxVg6vZmAsXgvA7wFO5I",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/employees/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "employees",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Company update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDc5MzA5LCJpYXQiOjE3NzMzOTI5MDksImp0aSI6IjQ5Njk3YTQwMTFmMjRmZGY4NmEyNTI3MWVlMmQxNGI3IiwidXNlcl9pZCI6IjEifQ.0z7EROkuWiOxMwYku2ujfHwjHl4KHz9XNBEmXTPgSRk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "new company",
+                  "type": "text",
+                  "uuid": "c7544620-4fb0-4538-a1eb-f498c2f11eb0"
+                },
+                {
+                  "key": "phone",
+                  "value": "3214123213",
+                  "type": "text",
+                  "uuid": "b3153f4d-e353-41c9-ba6b-92bc9f077998"
+                },
+                {
+                  "key": "address",
+                  "value": "mazzeh",
+                  "type": "text",
+                  "uuid": "6e391d2f-b23c-4339-8b15-a384f3757f03"
+                },
+                {
+                  "key": "qr_code_image",
+                  "type": "file",
+                  "uuid": "4265308f-d5a3-48a4-8e41-9e0cf4e5f8f6",
+                  "src": "/C:/Users/slman/Pictures/Zephyrus G14_1920x1080.jpg"
+                },
+                {
+                  "key": "id_card_image",
+                  "type": "file",
+                  "uuid": "4d6c182c-1553-484d-8da6-716ce39b65b5",
+                  "src": "/C:/Users/slman/Pictures/Zephyrus G14_1920x1080.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/company/update/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "update",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDc5MzA5LCJpYXQiOjE3NzMzOTI5MDksImp0aSI6IjQ5Njk3YTQwMTFmMjRmZGY4NmEyNTI3MWVlMmQxNGI3IiwidXNlcl9pZCI6IjEifQ.0z7EROkuWiOxMwYku2ujfHwjHl4KHz9XNBEmXTPgSRk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get The Employees Of the Comapny",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDgzNTgyLCJpYXQiOjE3NzMzOTcxODIsImp0aSI6Ijk1MTY5ZWJmZjBmMDRkYjI4NDk2NTIwYzdkZDYwZDhiIiwidXNlcl9pZCI6IjEifQ.dqFULdWMe6Xw9RUvwddMcMjGboYDNbYhaHrpe6643FQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/get/employees/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "get",
+                "employees",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Packages",
+      "item": [
+        {
+          "name": "Filter",
+          "item": [
+            {
+              "name": "Filter packages",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyOTIyNDk5LCJpYXQiOjE3NzI5MjA2OTksImp0aSI6ImY5OWE2N2FhN2NlMzRiZWQ5ODc1Nzg0YmMxZGM3NTBlIiwidXNlcl9pZCI6IjYifQ.kzHVbUwDy44HGJc8nkltA6uC-XLYJpieSe5a4GKv4b0",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/packages/?company_id=1&package_type=vip&min_price=1000&max_price=5000",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "packages",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "company_id",
+                      "value": "1"
+                    },
+                    {
+                      "key": "package_type",
+                      "value": "vip"
+                    },
+                    {
+                      "key": "min_price",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "max_price",
+                      "value": "5000"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Create Package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjYwMjE2LCJpYXQiOjE3NzM1NzM4MTYsImp0aSI6IjBmOTJhNDY3YWFkNTRlNTc4NmUxMDUwNmU5YmI5NWRiIiwidXNlcl9pZCI6IjEifQ.6BsDll3ITyL9DGlW_fDmaWHp6RhfxQagKLnbuNigVjA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"عمرة رمضان\",\r\n  \"description\": \"عمرة مميزة في رمضان\",\r\n  \"package_type\": \"family\",\r\n  \"price\": 2500,\r\n  \"start_date\": \"2024-03-01\",\r\n  \"end_date\": \"2024-04-01\",\r\n  \"duration_days\": 15,\r\n  \"capacity\": 50,\r\n  \"includes_flight\": true,\r\n  \"includes_hotel\": true,\r\n  \"guide\": 1\r\n  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/packages/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "packages",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Packages",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyOTIyNDk5LCJpYXQiOjE3NzI5MjA2OTksImp0aSI6ImY5OWE2N2FhN2NlMzRiZWQ5ODc1Nzg0YmMxZGM3NTBlIiwidXNlcl9pZCI6IjYifQ.kzHVbUwDy44HGJc8nkltA6uC-XLYJpieSe5a4GKv4b0",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/packages/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "packages",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific package",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyODA2MzUxLCJpYXQiOjE3NzI4MDQ1NTEsImp0aSI6IjlkYjQ4NmExNTZiZjQ1ODViNTU1MDU5ZDc2YzcxNmM2IiwidXNlcl9pZCI6IjEifQ.8nNEEACZ5r01DxFl5gP9qv-Knwdf3Lq1iRYbcmNL2-8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Updated Package\",\r\n  \"description\": \"Updated\",\r\n  \"package_type\": \"vip\",\r\n  \"price\": 3000,\r\n  \"start_date\": \"2025-03-01\",\r\n  \"end_date\": \"2025-03-10\",\r\n  \"duration_days\": 10,\r\n  \"capacity\": 40\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/packages/1/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "packages",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyODA2MzUxLCJpYXQiOjE3NzI4MDQ1NTEsImp0aSI6IjlkYjQ4NmExNTZiZjQ1ODViNTU1MDU5ZDc2YzcxNmM2IiwidXNlcl9pZCI6IjEifQ.8nNEEACZ5r01DxFl5gP9qv-Knwdf3Lq1iRYbcmNL2-8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/packages/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "packages",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Approve/Reject Comapnies",
+          "item": [
+            {
+              "name": "Approve",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjYyMDc4LCJpYXQiOjE3NzM1NzU2NzgsImp0aSI6IjY2ZDA5YjgzZjljOTRiOTg4Y2M5YzBhNzc4MDVhYjY2IiwidXNlcl9pZCI6IjIifQ.tV1rMoQHQ512BL9BYCPfq87GnmjgqTaOhWTK6vruLgM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"ACTIVE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/companies/8/approve-reject/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "companies",
+                    "8",
+                    "approve-reject",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjYyMDc4LCJpYXQiOjE3NzM1NzU2NzgsImp0aSI6IjY2ZDA5YjgzZjljOTRiOTg4Y2M5YzBhNzc4MDVhYjY2IiwidXNlcl9pZCI6IjIifQ.tV1rMoQHQ512BL9BYCPfq87GnmjgqTaOhWTK6vruLgM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"REJECTED\",\r\n  \"rejection_reason\": \"Missing documents\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/companies/8/approve-reject/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "companies",
+                    "8",
+                    "approve-reject",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Approve/Reject Packages",
+          "item": [
+            {
+              "name": "Approve",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjcxODU0LCJpYXQiOjE3NzM1ODU0NTQsImp0aSI6IjRhYmFjNGE0Yjg3MTRhNzk5OGVlNTg2MWY1MmUzYThhIiwidXNlcl9pZCI6IjIifQ.PsQJQJUjiw6MbRX7fSWPENLOQ8sPrESLHxXphZCGaBA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"status\": \"ACTIVE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/packages/8/update-status/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "packages",
+                    "8",
+                    "update-status",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjcxODU0LCJpYXQiOjE3NzM1ODU0NTQsImp0aSI6IjRhYmFjNGE0Yjg3MTRhNzk5OGVlNTg2MWY1MmUzYThhIiwidXNlcl9pZCI6IjIifQ.PsQJQJUjiw6MbRX7fSWPENLOQ8sPrESLHxXphZCGaBA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"status\": \"CLOSED\",\r\n    \"reason\": \"Package dates are invalid\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/packages/8/update-status/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "packages",
+                    "8",
+                    "update-status",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Platform Employees",
+          "item": [
+            {
+              "name": "Create Support",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNzQ3Nzg5LCJpYXQiOjE3NzM2NjEzOTAsImp0aSI6ImZkYWU3YTcyNjBjOTRlMTc5OGU1MjAzM2YxZTgwNGNlIiwidXNlcl9pZCI6IjIifQ.UzYw1ThNy-7GL2QcDSALR5cB2uf8x04AzjC8rD9KzAg",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"support@platform.com\",\r\n  \"password\": \"12345678\",\r\n  \"role\": \"SUPPORT\",\r\n  \"first_name\": \"Sara\",\r\n  \"last_name\": \"Ali\",\r\n  \"phone\": \"+963999999\",\r\n  \"job_title\": \"Customer Support Agent\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/admin/platform-staff/create/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "platform-staff",
+                    "create",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Finance",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNzQ3Nzg5LCJpYXQiOjE3NzM2NjEzOTAsImp0aSI6ImZkYWU3YTcyNjBjOTRlMTc5OGU1MjAzM2YxZTgwNGNlIiwidXNlcl9pZCI6IjIifQ.UzYw1ThNy-7GL2QcDSALR5cB2uf8x04AzjC8rD9KzAg",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"finance@platform.com\",\r\n  \"password\": \"12345678\",\r\n  \"role\": \"FINANCE\",\r\n  \"first_name\": \"Ahmad\",\r\n  \"last_name\": \"Khaled\",\r\n  \"phone\": \"+963988888888\",\r\n  \"job_title\": \"Senior Accountant\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/admin/platform-staff/create/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "platform-staff",
+                    "create",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit employees",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNzQ3Nzg5LCJpYXQiOjE3NzM2NjEzOTAsImp0aSI6ImZkYWU3YTcyNjBjOTRlMTc5OGU1MjAzM2YxZTgwNGNlIiwidXNlcl9pZCI6IjIifQ.UzYw1ThNy-7GL2QcDSALR5cB2uf8x04AzjC8rD9KzAg",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"first_name\": \"Ahmad\",\r\n  \"phone\": \"+963999999\",\r\n  \"job_title\": \"Senior Support\",\r\n  \"is_active\": false\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/admin/platform-staff/22/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "platform-staff",
+                    "22",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Employees",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNzQ3Nzg5LCJpYXQiOjE3NzM2NjEzOTAsImp0aSI6ImZkYWU3YTcyNjBjOTRlMTc5OGU1MjAzM2YxZTgwNGNlIiwidXNlcl9pZCI6IjIifQ.UzYw1ThNy-7GL2QcDSALR5cB2uf8x04AzjC8rD9KzAg",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"first_name\": \"Ahmad\",\r\n  \"phone\": \"+963999999\",\r\n  \"job_title\": \"Senior Support\",\r\n  \"is_active\": false\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/admin/platform-staff/22/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "platform-staff",
+                    "22",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get finance emp in the platform",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNzQ3Nzg5LCJpYXQiOjE3NzM2NjEzOTAsImp0aSI6ImZkYWU3YTcyNjBjOTRlMTc5OGU1MjAzM2YxZTgwNGNlIiwidXNlcl9pZCI6IjIifQ.UzYw1ThNy-7GL2QcDSALR5cB2uf8x04AzjC8rD9KzAg",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/staff/finance/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "staff",
+                    "finance",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get support emp in the platform",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNzQ3Nzg5LCJpYXQiOjE3NzM2NjEzOTAsImp0aSI6ImZkYWU3YTcyNjBjOTRlMTc5OGU1MjAzM2YxZTgwNGNlIiwidXNlcl9pZCI6IjIifQ.UzYw1ThNy-7GL2QcDSALR5cB2uf8x04AzjC8rD9KzAg",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/admin/staff/support/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "admin",
+                    "staff",
+                    "support",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Guide approve",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyODEwMjE0LCJpYXQiOjE3NzI4MDg0MTQsImp0aSI6IjIwNWU1YTJhNjdlMjRmMjVhYTlmNmUwZmJjNjAzZjUyIiwidXNlcl9pZCI6IjIifQ.ZDsJiMJVM_XEWt1VyCUlHf-xDvE0gcoUiVhPAIAvhSM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/3/approve/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "3",
+                "approve",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all pilgrims",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMTM5ODMwLCJpYXQiOjE3NzMwNTM0MzAsImp0aSI6ImI2MTMwMmQ4MWM0ODQzZDRiNDEzOTdhNjQ2YzZmMDY3IiwidXNlcl9pZCI6IjIifQ.bOTmdoZieWN94xxOe0s1Onw5lShokLujAMBs4bdl6uM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/pilgrims/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pilgrims",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all companies",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNjcxODU0LCJpYXQiOjE3NzM1ODU0NTQsImp0aSI6IjRhYmFjNGE0Yjg3MTRhNzk5OGVlNTg2MWY1MmUzYThhIiwidXNlcl9pZCI6IjIifQ.PsQJQJUjiw6MbRX7fSWPENLOQ8sPrESLHxXphZCGaBA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/companies/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "companies",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all booking",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMTM5ODMwLCJpYXQiOjE3NzMwNTM0MzAsImp0aSI6ImI2MTMwMmQ4MWM0ODQzZDRiNDEzOTdhNjQ2YzZmMDY3IiwidXNlcl9pZCI6IjIifQ.bOTmdoZieWN94xxOe0s1Onw5lShokLujAMBs4bdl6uM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/bookings/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "bookings",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All the Employees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDgzNjcxLCJpYXQiOjE3NzMzOTcyNzEsImp0aSI6ImJmMDZkOTA0NDRiNzRlOTQ5YjA0Y2VjYjY0YWZjM2E1IiwidXNlcl9pZCI6IjIifQ.1Eq_gM8OJBi999cwghlakGFDOsCaW1lqShMpfQ98VmI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/employees/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "employees",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Employee",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDgzNjcxLCJpYXQiOjE3NzMzOTcyNzEsImp0aSI6ImJmMDZkOTA0NDRiNzRlOTQ5YjA0Y2VjYjY0YWZjM2E1IiwidXNlcl9pZCI6IjIifQ.1Eq_gM8OJBi999cwghlakGFDOsCaW1lqShMpfQ98VmI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/employee/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "employee",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDgzNjcxLCJpYXQiOjE3NzMzOTcyNzEsImp0aSI6ImJmMDZkOTA0NDRiNzRlOTQ5YjA0Y2VjYjY0YWZjM2E1IiwidXNlcl9pZCI6IjIifQ.1Eq_gM8OJBi999cwghlakGFDOsCaW1lqShMpfQ98VmI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/employee/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "employee",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Pilgram",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDgzNjcxLCJpYXQiOjE3NzMzOTcyNzEsImp0aSI6ImJmMDZkOTA0NDRiNzRlOTQ5YjA0Y2VjYjY0YWZjM2E1IiwidXNlcl9pZCI6IjIifQ.1Eq_gM8OJBi999cwghlakGFDOsCaW1lqShMpfQ98VmI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/pilgrim/6/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pilgrim",
+                "6",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczOTI1NzU0LCJpYXQiOjE3NzM4MzkzNTQsImp0aSI6ImE3MTIyYjBlNmM3ZjQ3YThiMWJkMDllMmJhOWUzNDZmIiwidXNlcl9pZCI6IjIifQ.zq9siUZyVF_S0tb38o5AEqDPvNPo7TNtJXcq2nbtrFE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/superuser/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "superuser",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Change Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTU3MjcyLCJpYXQiOjE3NzQ4NzA4NzIsImp0aSI6ImU1NGEyYWZkOGY1NzQ2YTlhMTdiOWQ1OWQ0ZWJjMjQyIiwidXNlcl9pZCI6IjIifQ.Zlp9qkele6_hHEdLr_sG8vG1wRBKmphyPI9tR7aSl4c",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"ACTIVE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/users/6/status/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "6",
+                "status",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Approval",
+          "item": [
+            {
+              "name": "Approve",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMTM1ODA4LCJpYXQiOjE3NzMwNDk0MDgsImp0aSI6IjQwZTNiOWY2NWQ1YjQyNGI4OGFhZjM3YTAxZTNlNjMyIiwidXNlcl9pZCI6IjEifQ.6T2ZLYyJTxih5EdYMxV7vXvCVpu8JeHz5LhuD43h_C0",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/user/bookings/1/approve/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "bookings",
+                    "1",
+                    "approve",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMTM2MDY5LCJpYXQiOjE3NzMwNDk2NjksImp0aSI6IjM1YzNiYmNlNjg0YjRhMWFiOTM4ODBlMDE5ZDQ1NmJkIiwidXNlcl9pZCI6IjYifQ.Kkv2sVYWcWOnL3GeDgUFUByIi1Bs_J2lp5447_FxrLk",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n \"reason\": \"Payment not valid\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/user/bookings/1/reject/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "bookings",
+                    "1",
+                    "reject",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "User Booking",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyOTI1NTE2LCJpYXQiOjE3NzI5MjM3MTYsImp0aSI6IjBmZThkYWY1ZWFjNTQ3ZDdiMjZjOGVhZGRiODEwN2IzIiwidXNlcl9pZCI6IjYifQ.jEHjrL2zrA3mAjHvLVKJVBm1sVhPFWtU1_tnPwCJKvU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"package\": 4,\r\n  \"seats\": 2\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/bookings/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "bookings",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Payment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyOTI1NTE2LCJpYXQiOjE3NzI5MjM3MTYsImp0aSI6IjBmZThkYWY1ZWFjNTQ3ZDdiMjZjOGVhZGRiODEwN2IzIiwidXNlcl9pZCI6IjYifQ.jEHjrL2zrA3mAjHvLVKJVBm1sVhPFWtU1_tnPwCJKvU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 5000,\r\n  \"transaction_number\": \"TRX1001\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/bookings/1/pay/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "bookings",
+                "1",
+                "pay",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Full Payment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyOTI1NTE2LCJpYXQiOjE3NzI5MjM3MTYsImp0aSI6IjBmZThkYWY1ZWFjNTQ3ZDdiMjZjOGVhZGRiODEwN2IzIiwidXNlcl9pZCI6IjYifQ.jEHjrL2zrA3mAjHvLVKJVBm1sVhPFWtU1_tnPwCJKvU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 4000,\r\n  \"transaction_number\": \"TRX1002\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/bookings/1/pay/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "bookings",
+                "1",
+                "pay",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get my Booking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific booking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change the Payment Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNDgyNjEwLCJpYXQiOjE3NzMzOTYyMTAsImp0aSI6ImI0ZGQ3MzU5ZDM4NjQxMTFhZTg1ODQ1MjBiMTI1ZTcwIiwidXNlcl9pZCI6IjEifQ.5wbXOLN7H46yzaUXGYayyexuWb4krKEYJ6DneoA3404",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"CONFIRMED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/bookings/2/approve/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "bookings",
+                "2",
+                "approve",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "get notifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMTM2MDY5LCJpYXQiOjE3NzMwNDk2NjksImp0aSI6IjM1YzNiYmNlNjg0YjRhMWFiOTM4ODBlMDE5ZDQ1NmJkIiwidXNlcl9pZCI6IjYifQ.Kkv2sVYWcWOnL3GeDgUFUByIi1Bs_J2lp5447_FxrLk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notifications/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notifications",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Pilgram Contact",
+          "item": [
+            {
+              "name": "Get Compaines Contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczOTE5ODUzLCJpYXQiOjE3NzM4MzM0NTMsImp0aSI6ImJkMzkzZmE2YTRjNDQ4NTQ5MzUzMTFjZjllYTYzMGYxIiwidXNlcl9pZCI6IjI1In0._uvnZHvfZ1mOXJHs457Cma6LMDiC2vYMTdvomqihAKA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/chat/companies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "companies"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get MyPackages Contact",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/chat/my-packages/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "my-packages",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Companies Contact",
+          "item": [
+            {
+              "name": "Get Company Pilgrams Contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczOTI0MjU4LCJpYXQiOjE3NzM4Mzc4NTgsImp0aSI6ImQ0YWRhNDcyYjZjNDQ4NTc4YmYyOGUyNjdiNGIzMzQwIiwidXNlcl9pZCI6IjEifQ.krrWll6wbNVqzJwQm2PTQnzajmFmcp2Q7qGqIrTe1Dw",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/chat/company/pilgrims",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "company",
+                    "pilgrims"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Company Employees Contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0OTU5MzcxLCJpYXQiOjE3NzQ4NzI5NzEsImp0aSI6IjI1N2U2MzAwYjFlNjQyODhhMmU1ZTZmYWY3ZDVlMGY3IiwidXNlcl9pZCI6IjEifQ.SKORNpNwNQFV-qu55WTEL6mzxmpLFk935IAXkJHvN6k",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/chat/company/employees/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "company",
+                    "employees",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Platform Contact",
+          "item": [
+            {
+              "name": "Get Compaines Contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczOTE5ODUzLCJpYXQiOjE3NzM4MzM0NTMsImp0aSI6ImJkMzkzZmE2YTRjNDQ4NTQ5MzUzMTFjZjllYTYzMGYxIiwidXNlcl9pZCI6IjI1In0._uvnZHvfZ1mOXJHs457Cma6LMDiC2vYMTdvomqihAKA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/chat/companies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "companies"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Employees Platform",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MzY3NzYzLCJpYXQiOjE3NzQyODEzNjMsImp0aSI6IjM4MzU3YzdlNTQxZTRkNjE4YzNhNTdlNmQ2MDRlNWQ1IiwidXNlcl9pZCI6IjIifQ.U4LZLb_jOmKjpsm3ZYOL-h6SXd-RrZ07TH37aO2iAM4",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/chat/platform/employees/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "platform",
+                    "employees",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Groups",
+          "item": [
+            {
+              "name": "Create Group",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"My Group\",\r\n  \"users\": [2, 27, 29]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat/create-group/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "create-group",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Add Member",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"user_id\": 5\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat/group/14/add-user/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "group",
+                    "14",
+                    "add-user",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Make Admin Group",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"user_id\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat/group/15/make-admin/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "group",
+                    "15",
+                    "make-admin",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Leave Group",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat/group/15/leave/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "group",
+                    "15",
+                    "leave",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Member",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"user_id\": 5\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat/group/14/remove-user/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "group",
+                    "14",
+                    "remove-user",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Group",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat/group/14/delete/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat",
+                    "group",
+                    "14",
+                    "delete",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Create A Chat Room",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNTc4OTQ5LCJpYXQiOjE3NzM0OTI1NDksImp0aSI6IjA2MDJkY2U5NDAxYjRiNTQ4YzY3MTczNzhkYmJjY2IyIiwidXNlcl9pZCI6IjE4In0.yT_B4YqGXNaMmdWRY5e0FSsWjYhLOaK6FfmDNJITkLA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n \"user_id\": 2\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/create-room/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "create-room",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get my rooms",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MjcwMzQxLCJpYXQiOjE3NzQxODM5NDEsImp0aSI6ImYzZTdlOGNiMzkzYjQ2YmFhOWFlNGM0YmQzNmUzYTBlIiwidXNlcl9pZCI6IjI0In0.K_QaWscu_emqQUzTEaUvmHBLdVH4qK4cDoSlkshDUuY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/my-rooms",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "my-rooms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Room details",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTg1MDYyLCJpYXQiOjE3NzQwOTg2NjIsImp0aSI6ImQ3YWM2NGJiN2Q3NjQwMjI4N2Q1MGRkMDJkOTQ4NTBjIiwidXNlcl9pZCI6IjI1In0.F4xXsz84D_6xBJm6CRFjmX_W429yrpOs6vPmjfYyBQM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/room/15/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "room",
+                "15",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get my rooms messages",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNTc4OTQ5LCJpYXQiOjE3NzM0OTI1NDksImp0aSI6IjA2MDJkY2U5NDAxYjRiNTQ4YzY3MTczNzhkYmJjY2IyIiwidXNlcl9pZCI6IjE4In0.yT_B4YqGXNaMmdWRY5e0FSsWjYhLOaK6FfmDNJITkLA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/room/2/messages/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "room",
+                "2",
+                "messages",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get my rooms messages pagging",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNTc4OTQ5LCJpYXQiOjE3NzM0OTI1NDksImp0aSI6IjA2MDJkY2U5NDAxYjRiNTQ4YzY3MTczNzhkYmJjY2IyIiwidXNlcl9pZCI6IjE4In0.yT_B4YqGXNaMmdWRY5e0FSsWjYhLOaK6FfmDNJITkLA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/room/2/messages/?page=2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "room",
+                "2",
+                "messages",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark message Seen",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNTc4OTQ5LCJpYXQiOjE3NzM0OTI1NDksImp0aSI6IjA2MDJkY2U5NDAxYjRiNTQ4YzY3MTczNzhkYmJjY2IyIiwidXNlcl9pZCI6IjE4In0.yT_B4YqGXNaMmdWRY5e0FSsWjYhLOaK6FfmDNJITkLA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n \"message_id\": 12\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/room/2/mark-seen/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "room",
+                "2",
+                "mark-seen",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get unread meaages",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczNTc4OTQ5LCJpYXQiOjE3NzM0OTI1NDksImp0aSI6IjA2MDJkY2U5NDAxYjRiNTQ4YzY3MTczNzhkYmJjY2IyIiwidXNlcl9pZCI6IjE4In0.yT_B4YqGXNaMmdWRY5e0FSsWjYhLOaK6FfmDNJITkLA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n \"message_id\": 12\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/chat/rooms/unread/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat",
+                "rooms",
+                "unread",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "item": [
+        {
+          "name": "Create Ticket to the Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MzYyMzcyLCJpYXQiOjE3NzQyNzU5NzIsImp0aSI6ImIxMTAwOTcyZDU0NDQ0MjI5MTc1MWJkYmMzNzA5NTAxIiwidXNlcl9pZCI6IjI0In0.8R6FqGBEvyGe8gfDCURW6J0Rcw94zcY9Dtpu3gvojZA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"target_type\": \"COMPANY\",\r\n  \"target_company_id\": 1,\r\n  \"subject\": \"Need help\",\r\n  \"description\": \"I have an issue\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ticket/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ticket",
+                "create",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Ticket to the Platform",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MzYyMzcyLCJpYXQiOjE3NzQyNzU5NzIsImp0aSI6ImIxMTAwOTcyZDU0NDQ0MjI5MTc1MWJkYmMzNzA5NTAxIiwidXNlcl9pZCI6IjI0In0.8R6FqGBEvyGe8gfDCURW6J0Rcw94zcY9Dtpu3gvojZA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"target_type\": \"COMPANY\",\r\n  \"target_company_id\": 1,\r\n  \"subject\": \"Need help\",\r\n  \"description\": \"I have an issue\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ticket/create/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ticket",
+                "create",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get MY Tickets",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MzY1MzUzLCJpYXQiOjE3NzQyNzg5NTMsImp0aSI6IjI4MzFkZmRlODIxNzQ3NWM4M2MzMGJmYjU1NjY4ODI0IiwidXNlcl9pZCI6IjIifQ.y9eofqvR93rhRMOAS5wSg5YCV2mOmkp57stMcDxK230",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ticket/my/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ticket",
+                "my",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Ticket",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MzYyMzcyLCJpYXQiOjE3NzQyNzU5NzIsImp0aSI6ImIxMTAwOTcyZDU0NDQ0MjI5MTc1MWJkYmMzNzA5NTAxIiwidXNlcl9pZCI6IjI0In0.8R6FqGBEvyGe8gfDCURW6J0Rcw94zcY9Dtpu3gvojZA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ticket/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ticket",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Ticket Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MzY1MzUzLCJpYXQiOjE3NzQyNzg5NTMsImp0aSI6IjI4MzFkZmRlODIxNzQ3NWM4M2MzMGJmYjU1NjY4ODI0IiwidXNlcl9pZCI6IjIifQ.y9eofqvR93rhRMOAS5wSg5YCV2mOmkp57stMcDxK230",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"IN_PROGRESS\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ticket/1/status/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ticket",
+                "1",
+                "status",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}

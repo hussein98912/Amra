@@ -19,5 +19,6 @@ urlpatterns = [
     path("employee/self-update/", EmployeeSelfFullUpdateView.as_view(), name="employee-self-update"),
     path("employee/delete/<int:user_id>/", EmployeeDeleteView.as_view(), name="employee-delete"),
     path("employee-search/", EmployeeListByTypeView.as_view(), name="employee-list-by-type"),
+    path('employee-company/<int:employee_id>/update/', UpdateEmployeesAPIView.as_view(), name='company-update-employee'),
 
 ]
