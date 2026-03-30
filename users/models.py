@@ -40,6 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     email = models.EmailField(unique=True)
+    full_name = models.CharField(max_length=255,default="Unkown")
 
     role = models.CharField(max_length=30, choices=ROLE_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")

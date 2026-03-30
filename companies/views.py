@@ -104,6 +104,7 @@ class CompanyUserCreateView(APIView):
             email = request.data.get("email")
             password = request.data.get("password")
             role = request.data.get("role")
+            full_name = request.data.get("full_name")
 
             if not email or not password or not role:
                 return Response(
@@ -123,6 +124,7 @@ class CompanyUserCreateView(APIView):
             user = User.objects.create_user(
                 email=email,
                 password=password,
+                full_name=full_name,
                 role=role,
                 company=request.user.company,
                 status=status_value

@@ -113,7 +113,7 @@ class PilgrimSerializer(serializers.ModelSerializer):
     
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
+    full_name = serializers.CharField()
 
     class Meta:
         model = User
