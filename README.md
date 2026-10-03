@@ -122,6 +122,14 @@ Ticket statuses include `OPEN`, `IN_PROGRESS`, and `CLOSED`.
 
 ---
 
+## 🏗️ Architecture
+<img width="2794" height="1204" alt="mermaid-diagram (1)" src="https://github.com/user-attachments/assets/badf0d19-5635-4a8e-96e8-c0379d38df6a" />
+
+
+The project uses Django's ASGI stack for HTTP and WebSocket traffic. Django Channels is configured with Redis as the channel layer.
+
+---
+
 ## 📁 Project Structure
 
 ```text
